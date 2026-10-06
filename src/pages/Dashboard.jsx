@@ -1,24 +1,20 @@
-import DashboardHeader from "../components/dashboard/DashboardHeader";
-import StatCard from "../components/dashboard/StatCard";
 import ConversionCard from "../components/dashboard/ConversionCard";
+import StatCard from "../components/dashboard/StatCard";
 
+import OrdersChart from "../components/charts/OrdersChart";
 import RevenueChart from "../components/charts/RevenueChart";
 import UsersChart from "../components/charts/UsersChart";
-import OrdersChart from "../components/charts/OrdersChart";
 
 import {
-  stats,
-  revenueData,
-  usersData,
   ordersData,
+  revenueData,
+  stats,
+  usersData,
 } from "../data/dashboardData";
 
 const Dashboard = () => {
   return (
     <div className="w-full">
-      {/* Dashboard Header */}
-      <DashboardHeader />
-
       {/* KPI Cards */}
       <section
         className="

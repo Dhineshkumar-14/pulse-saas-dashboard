@@ -6,16 +6,13 @@ const navigationItems = [
     label: "Dashboard",
     path: "/dashboard",
     icon: LayoutDashboard,
-  },
-  {
-    label: "Transactions",
-    path: "/dashboard/transactions",
-    icon: CreditCard,
+    end: true,
   },
   {
     label: "Customers",
     path: "/dashboard/customers",
     icon: Users,
+    end: true,
   },
 ];
 
@@ -74,38 +71,39 @@ const Sidebar = () => {
           md:p-4
         "
       >
-        {navigationItems.map(({ label, path, icon: Icon }) => (
+        {navigationItems.map(({ label, path, icon: Icon, end }) => (
           <NavLink
             key={path}
             to={path}
+            end={end}
             className={({ isActive }) =>
               `
-                flex flex-1 flex-col
-                items-center justify-center
-                gap-1
-                rounded-md
-                px-2 py-2
-                text-[10px] font-medium
-                text-sidebar-text
-                transition-colors duration-200
+                  flex flex-1 flex-col
+                  items-center justify-center
+                  gap-1
+                  rounded-md
+                  px-2 py-2
+                  text-[10px] font-medium
+                  text-sidebar-text
+                  transition-colors duration-200
 
-                hover:bg-surface-hover
-                hover:text-text-primary
+                  hover:bg-surface-hover
+                  hover:text-text-primary
 
-                md:flex-none
-                md:flex-row
-                md:justify-start
-                md:gap-3
-                md:px-3
-                md:py-2.5
-                md:text-sm
+                  md:flex-none
+                  md:flex-row
+                  md:justify-start
+                  md:gap-3
+                  md:px-3
+                  md:py-2.5
+                  md:text-sm
 
-                ${
-                  isActive
-                    ? "bg-sidebar-active text-sidebar-text-active hover:bg-sidebar-active hover:text-sidebar-text-active"
-                    : ""
-                }
-              `
+                  ${
+                    isActive
+                      ? "bg-sidebar-active text-sidebar-text-active hover:bg-sidebar-active hover:text-sidebar-text-active"
+                      : ""
+                  }
+                `
             }
           >
             <Icon className="size-[18px] shrink-0" strokeWidth={1.8} />
@@ -126,6 +124,7 @@ const Sidebar = () => {
       >
         <NavLink
           to="/dashboard/settings"
+          end
           className={({ isActive }) =>
             `
               flex items-center gap-3

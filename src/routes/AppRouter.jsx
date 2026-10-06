@@ -1,6 +1,9 @@
 import { Routes, Route } from "react-router-dom";
+
 import Home from "../pages/Home";
 import Dashboard from "../pages/Dashboard";
+import Customers from "../pages/Customers";
+
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const AppRoutes = () => {
@@ -9,9 +12,13 @@ const AppRoutes = () => {
       {/* Public */}
       <Route path="/" element={<Home />} />
 
-      {/* Dashboard */}
-      <Route element={<DashboardLayout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+      {/* Dashboard Parent Route */}
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        {/* /dashboard */}
+        <Route index element={<Dashboard />} />
+
+        {/* /dashboard/customers */}
+        <Route path="customers" element={<Customers />} />
       </Route>
     </Routes>
   );
