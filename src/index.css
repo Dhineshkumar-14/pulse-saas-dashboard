@@ -1,1 +1,380 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap");
+
 @import "tailwindcss";
+
+/* =========================================================
+   PULSE DESIGN SYSTEM
+   ========================================================= */
+
+:root {
+  /* =======================================================
+     BRAND
+     ======================================================= */
+
+  --pulse-primary: #635bff;
+  --pulse-primary-hover: #4d46db;
+  --pulse-primary-soft: #eeedff;
+  --pulse-primary-foreground: #ffffff;
+
+  /* =======================================================
+     BACKGROUNDS
+     ======================================================= */
+
+  --pulse-background: #f7f8fb;
+  --pulse-surface: #ffffff;
+  --pulse-surface-muted: #fafbfc;
+  --pulse-surface-hover: #f4f5f8;
+  --pulse-surface-active: #eeedff;
+
+  /* =======================================================
+     TEXT
+     ======================================================= */
+
+  --pulse-text-primary: #111525;
+  --pulse-text-secondary: #31364a;
+  --pulse-text-muted: #73788c;
+  --pulse-text-subtle: #9296a5;
+  --pulse-text-disabled: #b5b8c2;
+  --pulse-text-inverse: #ffffff;
+
+  /* =======================================================
+     BORDER
+     ======================================================= */
+
+  --pulse-border: #e6e8ef;
+  --pulse-border-light: #eff0f4;
+  --pulse-border-hover: #cfd2dc;
+  --pulse-border-focus: #635bff;
+
+  /* =======================================================
+     SUCCESS
+     ======================================================= */
+
+  --pulse-success: #15966a;
+  --pulse-success-soft: #e9f8f2;
+  --pulse-success-border: #bde8d7;
+
+  /* =======================================================
+     WARNING
+     ======================================================= */
+
+  --pulse-warning: #bc7915;
+  --pulse-warning-soft: #fff5de;
+  --pulse-warning-border: #f0d79e;
+
+  /* =======================================================
+     ERROR
+     ======================================================= */
+
+  --pulse-error: #d74f54;
+  --pulse-error-soft: #fff0f1;
+  --pulse-error-border: #f1c4c7;
+
+  /* =======================================================
+     INFO
+     ======================================================= */
+
+  --pulse-info: #3b82f6;
+  --pulse-info-soft: #eff6ff;
+  --pulse-info-border: #bfdbfe;
+
+  /* =======================================================
+     OVERLAY
+     ======================================================= */
+
+  --pulse-overlay: rgba(16, 18, 28, 0.3);
+  --pulse-overlay-light: rgba(16, 18, 28, 0.08);
+
+  /* =======================================================
+     CHARTS
+     ======================================================= */
+
+  --pulse-chart-primary: #635bff;
+  --pulse-chart-secondary: #67c9a5;
+  --pulse-chart-tertiary: #e1e2e8;
+  --pulse-chart-grid: #e6e7ed;
+
+  /* =======================================================
+     SIDEBAR
+     ======================================================= */
+
+  --pulse-sidebar-background: #ffffff;
+  --pulse-sidebar-border: #e6e8ef;
+  --pulse-sidebar-text: #6c7184;
+  --pulse-sidebar-text-active: #635bff;
+  --pulse-sidebar-active: #eeedff;
+
+  /* =======================================================
+     HEADER
+     ======================================================= */
+
+  --pulse-header-background: #ffffff;
+  --pulse-header-border: #e6e8ef;
+
+  /* =======================================================
+     DARK SECTION
+     ======================================================= */
+
+  --pulse-dark-background: #11131c;
+  --pulse-dark-surface: #171927;
+  --pulse-dark-border: #252835;
+  --pulse-dark-text: #ffffff;
+  --pulse-dark-text-muted: #9397a7;
+
+  /* =======================================================
+     TYPOGRAPHY
+     ======================================================= */
+
+  --pulse-font-sans: "DM Sans", sans-serif;
+  --pulse-font-heading: "Manrope", sans-serif;
+
+  /* =======================================================
+     RADIUS
+     ======================================================= */
+
+  --pulse-radius-sm: 6px;
+  --pulse-radius-md: 8px;
+  --pulse-radius-lg: 10px;
+  --pulse-radius-xl: 14px;
+  --pulse-radius-2xl: 18px;
+  --pulse-radius-3xl: 24px;
+  --pulse-radius-full: 999px;
+
+  /* =======================================================
+     SHADOWS
+     ======================================================= */
+
+  --pulse-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --pulse-shadow-md: 0 6px 15px rgba(30, 35, 60, 0.07);
+  --pulse-shadow-lg: 0 16px 40px rgba(24, 28, 50, 0.08);
+  --pulse-shadow-xl: 0 25px 60px rgba(33, 37, 70, 0.08);
+  --pulse-shadow-primary: 0 8px 20px rgba(99, 91, 255, 0.26);
+
+  /* =======================================================
+     SPACING
+     ======================================================= */
+
+  --pulse-spacing-page: 32px;
+  --pulse-spacing-section: 120px;
+  --pulse-spacing-card: 24px;
+
+  /* =======================================================
+     LAYOUT
+     ======================================================= */
+
+  --pulse-container-sm: 640px;
+  --pulse-container-md: 768px;
+  --pulse-container-lg: 1024px;
+  --pulse-container-xl: 1200px;
+  --pulse-container-2xl: 1440px;
+
+  /* =======================================================
+     TRANSITIONS
+     ======================================================= */
+
+  --pulse-transition-fast: 150ms ease;
+  --pulse-transition-normal: 200ms ease;
+  --pulse-transition-slow: 300ms ease;
+
+  /* =======================================================
+     Z-INDEX
+     ======================================================= */
+
+  --pulse-z-header: 30;
+  --pulse-z-sidebar: 80;
+  --pulse-z-overlay: 89;
+  --pulse-z-modal: 90;
+
+  /* =======================================================
+     DEFAULTS
+     ======================================================= */
+
+  font-family: var(--pulse-font-sans);
+  color: var(--pulse-text-primary);
+  background: var(--pulse-background);
+  font-synthesis: none;
+}
+
+/* =========================================================
+   TAILWIND v4 THEME
+   ========================================================= */
+
+@theme {
+  /* -------------------------------------------------------
+     Colors
+     ------------------------------------------------------- */
+
+  --color-primary: var(--pulse-primary);
+  --color-primary-hover: var(--pulse-primary-hover);
+  --color-primary-soft: var(--pulse-primary-soft);
+  --color-primary-foreground: var(--pulse-primary-foreground);
+
+  --color-background: var(--pulse-background);
+  --color-surface: var(--pulse-surface);
+  --color-surface-muted: var(--pulse-surface-muted);
+  --color-surface-hover: var(--pulse-surface-hover);
+  --color-surface-active: var(--pulse-surface-active);
+
+  --color-text-primary: var(--pulse-text-primary);
+  --color-text-secondary: var(--pulse-text-secondary);
+  --color-text-muted: var(--pulse-text-muted);
+  --color-text-subtle: var(--pulse-text-subtle);
+  --color-text-disabled: var(--pulse-text-disabled);
+  --color-text-inverse: var(--pulse-text-inverse);
+
+  --color-border: var(--pulse-border);
+  --color-border-light: var(--pulse-border-light);
+  --color-border-hover: var(--pulse-border-hover);
+  --color-border-focus: var(--pulse-border-focus);
+
+  --color-success: var(--pulse-success);
+  --color-success-soft: var(--pulse-success-soft);
+  --color-success-border: var(--pulse-success-border);
+
+  --color-warning: var(--pulse-warning);
+  --color-warning-soft: var(--pulse-warning-soft);
+  --color-warning-border: var(--pulse-warning-border);
+
+  --color-error: var(--pulse-error);
+  --color-error-soft: var(--pulse-error-soft);
+  --color-error-border: var(--pulse-error-border);
+
+  --color-info: var(--pulse-info);
+  --color-info-soft: var(--pulse-info-soft);
+  --color-info-border: var(--pulse-info-border);
+
+  --color-chart-primary: var(--pulse-chart-primary);
+  --color-chart-secondary: var(--pulse-chart-secondary);
+  --color-chart-tertiary: var(--pulse-chart-tertiary);
+  --color-chart-grid: var(--pulse-chart-grid);
+
+  --color-sidebar-background: var(--pulse-sidebar-background);
+  --color-sidebar-border: var(--pulse-sidebar-border);
+  --color-sidebar-text: var(--pulse-sidebar-text);
+  --color-sidebar-text-active: var(--pulse-sidebar-text-active);
+  --color-sidebar-active: var(--pulse-sidebar-active);
+
+  --color-header-background: var(--pulse-header-background);
+  --color-header-border: var(--pulse-header-border);
+
+  --color-dark-background: var(--pulse-dark-background);
+  --color-dark-surface: var(--pulse-dark-surface);
+  --color-dark-border: var(--pulse-dark-border);
+  --color-dark-text: var(--pulse-dark-text);
+  --color-dark-text-muted: var(--pulse-dark-text-muted);
+
+  /* -------------------------------------------------------
+     Fonts
+     ------------------------------------------------------- */
+
+  --font-sans: var(--pulse-font-sans);
+  --font-heading: var(--pulse-font-heading);
+
+  /* -------------------------------------------------------
+     Radius
+     ------------------------------------------------------- */
+
+  --radius-sm: var(--pulse-radius-sm);
+  --radius-md: var(--pulse-radius-md);
+  --radius-lg: var(--pulse-radius-lg);
+  --radius-xl: var(--pulse-radius-xl);
+  --radius-2xl: var(--pulse-radius-2xl);
+  --radius-3xl: var(--pulse-radius-3xl);
+  --radius-full: var(--pulse-radius-full);
+
+  /* -------------------------------------------------------
+     Shadows
+     ------------------------------------------------------- */
+
+  --shadow-sm: var(--pulse-shadow-sm);
+  --shadow-md: var(--pulse-shadow-md);
+  --shadow-lg: var(--pulse-shadow-lg);
+  --shadow-xl: var(--pulse-shadow-xl);
+  --shadow-primary: var(--pulse-shadow-primary);
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--pulse-background);
+  color: var(--pulse-text-primary);
+  font-family: var(--pulse-font-sans);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-family: var(--pulse-font-heading);
+  color: var(--pulse-text-primary);
+}
+
+p {
+  margin: 0;
+}
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+  background: var(--pulse-primary-soft);
+  color: var(--pulse-primary);
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--pulse-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pulse-border-hover);
+  border-radius: var(--pulse-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pulse-text-muted);
+}

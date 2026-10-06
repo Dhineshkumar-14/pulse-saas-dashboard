@@ -1,9 +1,12 @@
-function App() {
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRouter";
+
+const App = () => {
   return (
-    <>
-      <div className="bg-slate-950 text-white p-6">Pulse</div>
-    </>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
