@@ -1,4 +1,10 @@
-import { ArrowRight, BarChart3, LayoutDashboard, Rocket } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  Check,
+  LayoutDashboard,
+  Rocket,
+} from "lucide-react";
 
 const steps = [
   {
@@ -7,6 +13,7 @@ const steps = [
     title: "Connect your data",
     description:
       "Bring your customers, orders, and revenue data into Pulse and get everything organized in one place.",
+    status: "Data connected",
   },
   {
     number: "02",
@@ -14,6 +21,7 @@ const steps = [
     title: "Understand your business",
     description:
       "See your key metrics, trends, and performance through simple dashboards and actionable insights.",
+    status: "Insights revealed",
   },
   {
     number: "03",
@@ -21,6 +29,7 @@ const steps = [
     title: "Grow with confidence",
     description:
       "Use clear insights to make faster decisions, improve performance, and keep your business moving forward.",
+    status: "Action taken",
   },
 ];
 
@@ -28,48 +37,60 @@ const HowItWorks = () => {
   return (
     <section
       id="how-it-works"
-      className="relative overflow-hidden border-t border-border bg-muted/30 py-20 sm:py-24 lg:py-32"
+      className="
+        border-t
+        border-border-light
+        bg-surface-muted
+        py-20
+        sm:py-24
+        lg:py-28
+      "
     >
-      {/* Background glow */}
       <div
         className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-0
-          -z-10
-          h-[400px]
-          w-[700px]
-          -translate-x-1/2
-          rounded-full
-          bg-primary/5
-          blur-[120px]
+          mx-auto
+          max-w-[var(--pulse-container-xl)]
+          px-4
+          sm:px-6
+          lg:px-8
         "
-      />
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
+      >
+        {/* Heading */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold text-primary">HOW IT WORKS</p>
+          <div
+            className="
+              inline-flex
+              items-center
+              rounded-full
+              border
+              border-border
+              bg-surface
+              px-3
+              py-1.5
+              text-xs
+              font-semibold
+              text-primary
+            "
+          >
+            HOW IT WORKS
+          </div>
 
           <h2
             className="
-              mt-3
+              mt-5
+              font-heading
               text-3xl
-              font-bold
-              tracking-tight
-              text-foreground
+              font-extrabold
+              leading-tight
+              tracking-[-0.035em]
+              text-text-primary
               sm:text-4xl
               lg:text-5xl
             "
           >
             From data to decisions
-            <span className="text-muted-foreground">
-              {" "}
-              in three simple steps.
-            </span>
+            <br className="hidden sm:block" />
+            <span className="text-primary"> in three simple steps.</span>
           </h2>
 
           <p
@@ -79,7 +100,7 @@ const HowItWorks = () => {
               max-w-2xl
               text-sm
               leading-6
-              text-muted-foreground
+              text-text-secondary
               sm:text-base
               sm:leading-7
             "
@@ -89,83 +110,80 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        {/* =====================================================
-            STEPS
-        ===================================================== */}
+        {/* Steps */}
         <div
           className="
-            relative
-            mt-14
+            mt-12
             grid
-            gap-8
-            sm:mt-16
+            gap-4
+            sm:mt-14
             lg:grid-cols-3
             lg:gap-6
           "
         >
-          {/* Connecting line */}
-          <div
-            className="
-              absolute
-              left-[16.66%]
-              right-[16.66%]
-              top-10
-              hidden
-              border-t
-              border-dashed
-              border-border
-              lg:block
-            "
-          />
-
           {steps.map((step) => {
             const Icon = step.icon;
 
             return (
-              <div
+              <article
                 key={step.number}
                 className="
-                  relative
-                  rounded-2xl
+                  group
+                  rounded-[var(--pulse-radius-xl)]
                   border
                   border-border
-                  bg-background
+                  bg-surface
                   p-6
-                  shadow-sm
                   transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  hover:shadow-lg
-                  sm:p-8
+                  duration-[var(--pulse-transition-normal)]
+                  hover:-translate-y-0.5
+                  hover:border-border-hover
+                  hover:shadow-md
+                  sm:p-7
                 "
               >
-                {/* Icon */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <div
-                    className="
-                      flex
-                      h-12
-                      w-12
-                      items-center
-                      justify-center
-                      rounded-xl
-                      bg-primary
-                      text-primary-foreground
-                      shadow-md
-                    "
-                  >
-                    <Icon size={21} />
+                {/* Step header */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="
+                        font-heading
+                        text-sm
+                        font-bold
+                        text-primary
+                      "
+                    >
+                      {step.number}
+                    </span>
+
+                    <span className="h-px w-8 bg-border" />
+
+                    <div
+                      className="
+                        flex
+                        h-8
+                        w-8
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-primary-soft
+                        text-primary
+                      "
+                    >
+                      <Icon size={15} strokeWidth={2} />
+                    </div>
                   </div>
 
                   <span
                     className="
-                      text-xs
-                      font-bold
-                      tracking-widest
-                      text-muted-foreground/50
+                      text-[11px]
+                      font-medium
+                      uppercase
+                      tracking-[0.12em]
+                      text-text-subtle
                     "
                   >
-                    {step.number}
+                    Step
                   </span>
                 </div>
 
@@ -173,11 +191,11 @@ const HowItWorks = () => {
                 <h3
                   className="
                     mt-7
-                    text-lg
-                    font-semibold
+                    font-heading
+                    text-xl
+                    font-bold
                     tracking-tight
-                    text-foreground
-                    sm:text-xl
+                    text-text-primary
                   "
                 >
                   {step.title}
@@ -188,60 +206,102 @@ const HowItWorks = () => {
                     mt-3
                     text-sm
                     leading-6
-                    text-muted-foreground
+                    text-text-secondary
                   "
                 >
                   {step.description}
                 </p>
 
-                {/* Bottom arrow */}
-                {step.number !== "03" && (
-                  <div
+                {/* Status */}
+                <div
+                  className="
+                    mt-7
+                    flex
+                    items-center
+                    gap-2
+                    border-t
+                    border-border-light
+                    pt-5
+                  "
+                >
+                  <span
                     className="
-                      mt-6
                       flex
+                      h-5
+                      w-5
                       items-center
-                      gap-2
-                      text-xs
-                      font-medium
-                      text-muted-foreground
+                      justify-center
+                      rounded-full
+                      bg-success-soft
+                      text-success
                     "
                   >
-                    Next step
-                    <ArrowRight size={14} />
-                  </div>
-                )}
-              </div>
+                    <Check size={11} strokeWidth={2.5} />
+                  </span>
+
+                  <span
+                    className="
+                      text-xs
+                      font-medium
+                      text-text-muted
+                    "
+                  >
+                    {step.status}
+                  </span>
+                </div>
+              </article>
             );
           })}
         </div>
 
-        {/* =====================================================
-            BOTTOM CTA
-        ===================================================== */}
-        <div className="mt-12 text-center sm:mt-14">
+        {/* CTA */}
+        <div
+          className="
+            mt-10
+            flex
+            flex-col
+            items-center
+            justify-center
+            gap-3
+            text-center
+            sm:mt-12
+            sm:flex-row
+          "
+        >
+          <p className="text-sm text-text-muted">
+            Ready to make better decisions?
+          </p>
+
           <a
             href="/dashboard"
             className="
+              group
               inline-flex
               items-center
               gap-2
-              rounded-xl
+              rounded-[var(--pulse-radius-md)]
               bg-primary
               px-5
               py-3
               text-sm
               font-semibold
               text-primary-foreground
-              shadow-sm
+              shadow-primary
               transition-all
-              duration-200
+              duration-[var(--pulse-transition-normal)]
               hover:-translate-y-0.5
-              hover:shadow-lg
+              hover:bg-primary-hover
             "
           >
             Start using Pulse
-            <ArrowRight size={16} />
+            <ArrowRight
+              size={15}
+              className="
+                transition-transform
+                duration-[var(--pulse-transition-fast)]
+                group-hover:translate-x-0.5
+              "
+            />
           </a>
         </div>
       </div>
