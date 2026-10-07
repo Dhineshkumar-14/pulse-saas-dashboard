@@ -5,9 +5,9 @@ import CustomerFilters from "../components/customers/CustomerFilters";
 import CustomerTable from "../components/customers/CustomerTable";
 import CustomerPagination from "../components/customers/CustomerPagination";
 
-import { useCustomers } from "../hooks/queries/useCustomers";
 import CustomerTableSkeleton from "../components/customers/CustomerTableSkeleton";
 import CustomerEmptyState from "../components/customers/CustomerEmptyState";
+import { useCustomers } from "../hooks/queries/useCustomers";
 
 const ITEMS_PER_PAGE = 5;
 
