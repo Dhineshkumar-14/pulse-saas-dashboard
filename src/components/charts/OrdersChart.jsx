@@ -8,7 +8,32 @@ import {
   Tooltip,
 } from "recharts";
 
-const OrdersChart = ({ data = [] }) => {
+import { useOrdersChart } from "../../hooks/queries/useOrdersChart";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+
+const OrdersChart = () => {
+  const { data, isLoading, isError } = useOrdersChart();
+
+  const carts = data?.carts ?? [];
+  const totalOrders = data?.total ?? carts.length;
+
+  // DummyJSON does not provide historical order dates.
+  // So we distribute orders across 6 buckets for visualization.
+  const ordersPerMonth = Math.ceil(carts.length / MONTHS.length);
+
+  const chartData = MONTHS.map((month, index) => {
+    const start = index * ordersPerMonth;
+    const end = Math.min(start + ordersPerMonth, carts.length);
+
+    return {
+      month,
+      orders: end - start,
+    };
+  });
+
+  const maxOrders = Math.max(...chartData.map((item) => item.orders), 0);
+
   return (
     <div
       className="
@@ -66,7 +91,7 @@ const OrdersChart = ({ data = [] }) => {
                 sm:text-[11px]
               "
             >
-              +9.7%
+              Orders
             </span>
           </div>
 
@@ -108,145 +133,168 @@ const OrdersChart = ({ data = [] }) => {
               sm:text-xl
             "
           >
-            3,642
+            {isLoading ? "..." : totalOrders.toLocaleString()}
           </p>
         </div>
       </div>
 
-      {/* Chart */}
-      <div
-        className="
-          h-[230px]
-          w-full
-          sm:h-[270px]
-          lg:h-[300px]
-        "
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={data}
-            margin={{
-              top: 8,
-              right: 4,
-              left: -18,
-              bottom: 0,
-            }}
-            barCategoryGap="28%"
-          >
-            {/* Grid */}
-            <CartesianGrid
-              stroke="var(--pulse-chart-grid)"
-              strokeDasharray="4 4"
-              vertical={false}
-              opacity={0.7}
-            />
-
-            {/* X Axis */}
-            <XAxis
-              dataKey="month"
-              axisLine={false}
-              tickLine={false}
-              tickMargin={10}
-              minTickGap={18}
-              tick={{
-                fill: "var(--pulse-text-muted)",
-                fontSize: 11,
-                fontWeight: 500,
-              }}
-            />
-
-            {/* Y Axis */}
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              width={48}
-              tickMargin={4}
-              tick={{
-                fill: "var(--pulse-text-muted)",
-                fontSize: 10,
-                fontWeight: 500,
-              }}
-              tickFormatter={(value) =>
-                value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value
-              }
-            />
-
-            {/* Tooltip */}
-            <Tooltip
-              cursor={{
-                fill: "var(--pulse-primary-soft)",
-                opacity: 0.35,
-              }}
-              contentStyle={{
-                border: "1px solid var(--pulse-border)",
-                borderRadius: "12px",
-                background: "var(--pulse-surface)",
-                boxShadow: "var(--pulse-shadow-md)",
-                padding: "10px 12px",
-              }}
-              labelStyle={{
-                color: "var(--pulse-text-muted)",
-                fontSize: "11px",
-                fontWeight: 500,
-                marginBottom: "4px",
-              }}
-              itemStyle={{
-                color: "var(--pulse-text-primary)",
-                fontSize: "12px",
-                fontWeight: 600,
-              }}
-              formatter={(value) => [Number(value).toLocaleString(), "Orders"]}
-            />
-
-            {/* Orders */}
-            <Bar
-              dataKey="orders"
-              fill="var(--pulse-chart-primary)"
-              radius={[6, 6, 2, 2]}
-              maxBarSize={42}
-              animationDuration={800}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Footer */}
-      <div
-        className="
-          mt-3
-          flex
-          items-center
-          justify-between
-          border-t
-          border-border-light
-          pt-3
-        "
-      >
-        <span
+      {/* Error */}
+      {isError ? (
+        <div
           className="
-            text-[10px]
+            flex
+            h-[230px]
+            items-center
+            justify-center
+            text-sm
             text-text-muted
-            sm:text-xs
+            sm:h-[270px]
+            lg:h-[300px]
           "
         >
-          Jan — Jun 2026
-        </span>
-
-        <div className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-primary" />
-
-          <span
+          Failed to load orders
+        </div>
+      ) : (
+        <>
+          {/* Chart */}
+          <div
             className="
-              text-[10px]
-              font-medium
-              text-text-muted
-              sm:text-xs
+              h-[230px]
+              w-full
+              sm:h-[270px]
+              lg:h-[300px]
             "
           >
-            Orders
-          </span>
-        </div>
-      </div>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                margin={{
+                  top: 8,
+                  right: 4,
+                  left: -18,
+                  bottom: 0,
+                }}
+                barCategoryGap="28%"
+              >
+                {/* Grid */}
+                <CartesianGrid
+                  stroke="var(--pulse-chart-grid)"
+                  strokeDasharray="4 4"
+                  vertical={false}
+                  opacity={0.7}
+                />
+
+                {/* X Axis */}
+                <XAxis
+                  dataKey="month"
+                  axisLine={false}
+                  tickLine={false}
+                  tickMargin={10}
+                  minTickGap={18}
+                  tick={{
+                    fill: "var(--pulse-text-muted)",
+                    fontSize: 11,
+                    fontWeight: 500,
+                  }}
+                />
+
+                {/* Y Axis */}
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  width={48}
+                  tickMargin={4}
+                  tick={{
+                    fill: "var(--pulse-text-muted)",
+                    fontSize: 10,
+                    fontWeight: 500,
+                  }}
+                  tickFormatter={(value) =>
+                    value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value
+                  }
+                />
+
+                {/* Tooltip */}
+                <Tooltip
+                  cursor={{
+                    fill: "var(--pulse-primary-soft)",
+                    opacity: 0.35,
+                  }}
+                  contentStyle={{
+                    border: "1px solid var(--pulse-border)",
+                    borderRadius: "12px",
+                    background: "var(--pulse-surface)",
+                    boxShadow: "var(--pulse-shadow-md)",
+                    padding: "10px 12px",
+                  }}
+                  labelStyle={{
+                    color: "var(--pulse-text-muted)",
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    marginBottom: "4px",
+                  }}
+                  itemStyle={{
+                    color: "var(--pulse-text-primary)",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                  }}
+                  formatter={(value) => [
+                    Number(value).toLocaleString(),
+                    "Orders",
+                  ]}
+                />
+
+                {/* Orders */}
+                <Bar
+                  dataKey="orders"
+                  fill="var(--pulse-chart-primary)"
+                  radius={[6, 6, 2, 2]}
+                  maxBarSize={42}
+                  animationDuration={800}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Footer */}
+          <div
+            className="
+              mt-3
+              flex
+              items-center
+              justify-between
+              border-t
+              border-border-light
+              pt-3
+            "
+          >
+            <span
+              className="
+                text-[10px]
+                text-text-muted
+                sm:text-xs
+              "
+            >
+              Jan — Jun 2026
+            </span>
+
+            <div className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-primary" />
+
+              <span
+                className="
+                  text-[10px]
+                  font-medium
+                  text-text-muted
+                  sm:text-xs
+                "
+              >
+                Orders
+              </span>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

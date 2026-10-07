@@ -1,29 +1,115 @@
-const conversionSteps = [
-  {
-    label: "Visitors",
-    value: "75,420",
-    percentage: 100,
-  },
-  {
-    label: "Signups",
-    value: "12,840",
-    percentage: 67,
-  },
-  {
-    label: "Customers",
-    value: "3,642",
-    percentage: 34,
-  },
-];
+import { useDashboardUsers } from "../../hooks/queries/useDashboard";
+import { useDashboardCarts } from "../../hooks/queries/useDashboard";
 
 const ConversionCard = () => {
+  const {
+    data: usersData,
+    isLoading: usersLoading,
+    isError: usersError,
+  } = useDashboardUsers();
+
+  const {
+    data: cartsData,
+    isLoading: cartsLoading,
+    isError: cartsError,
+  } = useDashboardCarts();
+
+  const isLoading = usersLoading || cartsLoading;
+  const isError = usersError || cartsError;
+
+  // Loading
+  if (isLoading) {
+    return (
+      <div
+        className="
+          h-[500px]
+          animate-pulse
+          rounded-2xl
+          border
+          border-border
+          bg-surface
+        "
+      />
+    );
+  }
+
+  // Error
+  if (isError) {
+    return (
+      <div
+        className="
+          flex
+          h-[500px]
+          items-center
+          justify-center
+          rounded-2xl
+          border
+          border-border
+          bg-surface
+        "
+      >
+        <p className="text-sm text-text-muted">
+          Failed to load conversion data
+        </p>
+      </div>
+    );
+  }
+
+  const totalUsers = usersData?.total ?? 0;
+  const carts = cartsData?.carts ?? [];
+
+  /*
+   * DummyJSON does not provide real website visitor data.
+   *
+   * We use a larger audience number for Visitors,
+   * actual API users for Signups,
+   * and unique cart users for Customers.
+   */
+
+  const visitors = Math.max(totalUsers * 24, totalUsers);
+
+  const signups = totalUsers;
+
+  // Find unique users who have placed an order/cart
+  const customerIds = new Set(carts.map((cart) => cart.userId).filter(Boolean));
+
+  const customers = customerIds.size;
+
+  // Funnel percentages
+  const signupPercentage = visitors > 0 ? (signups / visitors) * 100 : 0;
+
+  const customerPercentage = visitors > 0 ? (customers / visitors) * 100 : 0;
+
+  const conversionRate = customerPercentage;
+
+  const formattedConversion = conversionRate.toFixed(2);
+
+  const conversionSteps = [
+    {
+      label: "Visitors",
+      value: visitors.toLocaleString(),
+      percentage: 100,
+    },
+    {
+      label: "Signups",
+      value: signups.toLocaleString(),
+      percentage: Number(signupPercentage.toFixed(1)),
+    },
+    {
+      label: "Customers",
+      value: customers.toLocaleString(),
+      percentage: Number(customerPercentage.toFixed(1)),
+    },
+  ];
+
   return (
     <div
       className="
         w-full
         overflow-hidden
         rounded-2xl
-        border border-border
+        border
+        border-border
         bg-surface
         p-4
         shadow-sm
@@ -74,22 +160,22 @@ const ConversionCard = () => {
             items-center
             gap-1
             rounded-full
-            bg-success-soft
+            bg-primary-soft
             px-2
             py-1
           "
         >
-          <span className="size-1.5 rounded-full bg-success" />
+          <span className="size-1.5 rounded-full bg-primary" />
 
           <span
             className="
               text-[10px]
               font-semibold
-              text-success
+              text-primary
               sm:text-[11px]
             "
           >
-            +1.4%
+            Live
           </span>
         </div>
       </div>
@@ -103,7 +189,8 @@ const ConversionCard = () => {
           justify-between
           gap-4
           rounded-xl
-          border border-border-light
+          border
+          border-border-light
           bg-surface-muted
           p-4
           sm:mt-7
@@ -134,7 +221,7 @@ const ConversionCard = () => {
               sm:text-4xl
             "
           >
-            4.82%
+            {formattedConversion}%
           </p>
 
           <p
@@ -145,62 +232,65 @@ const ConversionCard = () => {
               sm:text-xs
             "
           >
-            vs last month
+            Visitors to customers
           </p>
         </div>
 
-        {/* Circular indicator */}
+        {/* Circular Indicator */}
         <div
           className="
-            relative
-            hidden
-            size-16
-            shrink-0
-            sm:flex
-            sm:items-center
-            sm:justify-center
-          "
+    relative
+    hidden
+    h-16
+    w-16
+    shrink-0
+    items-center
+    justify-center
+    rounded-full
+    sm:flex
+  "
+          style={{
+            background: `conic-gradient(
+      var(--pulse-primary) 0% ${Math.min(conversionRate, 100)}%,
+      var(--pulse-border) ${Math.min(conversionRate, 100)}% 100%
+    )`,
+          }}
         >
           <div
             className="
-              absolute
-              inset-0
-              rounded-full
-              border-[5px]
-              border-border
-            "
-          />
-
-          <div
-            className="
-              absolute
-              inset-0
-              rounded-full
-              border-[5px]
-              border-primary
-              border-r-transparent
-              border-b-transparent
-              rotate-45
-            "
-          />
-
-          <span
-            className="
-              relative
-              font-heading
-              text-xs
-              font-bold
-              text-primary
-            "
+      flex
+      h-[46px]
+      w-[46px]
+      items-center
+      justify-center
+      rounded-full
+      bg-surface-muted
+    "
           >
-            4.8
-          </span>
+            <span
+              className="
+        font-heading
+        text-[11px]
+        font-bold
+        text-primary
+      "
+            >
+              {formattedConversion}%
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Funnel */}
       <div className="mt-6">
-        <div className="mb-4 flex items-center justify-between">
+        <div
+          className="
+            mb-4
+            flex
+            items-center
+            justify-between
+          "
+        >
           <h3
             className="
               text-xs
@@ -211,8 +301,14 @@ const ConversionCard = () => {
             Conversion Funnel
           </h3>
 
-          <span className="text-[10px] text-text-muted sm:text-xs">
-            This period
+          <span
+            className="
+              text-[10px]
+              text-text-muted
+              sm:text-xs
+            "
+          >
+            Current data
           </span>
         </div>
 
@@ -229,7 +325,14 @@ const ConversionCard = () => {
                   gap-3
                 "
               >
-                <div className="flex min-w-0 items-center gap-2">
+                <div
+                  className="
+                    flex
+                    min-w-0
+                    items-center
+                    gap-2
+                  "
+                >
                   <span
                     className="
                       flex
@@ -260,7 +363,14 @@ const ConversionCard = () => {
                   </span>
                 </div>
 
-                <div className="flex shrink-0 items-center gap-2">
+                <div
+                  className="
+                    flex
+                    shrink-0
+                    items-center
+                    gap-2
+                  "
+                >
                   <span
                     className="
                       text-xs
@@ -273,7 +383,7 @@ const ConversionCard = () => {
 
                   <span
                     className="
-                      min-w-[32px]
+                      min-w-[38px]
                       text-right
                       text-[10px]
                       font-medium
@@ -310,43 +420,6 @@ const ConversionCard = () => {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Footer */}
-      <div
-        className="
-          mt-6
-          flex
-          flex-col
-          gap-2
-          border-t
-          border-border-light
-          pt-4
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        "
-      >
-        <span
-          className="
-            text-[10px]
-            text-text-muted
-            sm:text-xs
-          "
-        >
-          Based on 75,420 visitors
-        </span>
-
-        <span
-          className="
-            text-[10px]
-            font-medium
-            text-primary
-            sm:text-xs
-          "
-        >
-          View details →
-        </span>
       </div>
     </div>
   );

@@ -1,25 +1,71 @@
 import { useState } from "react";
 
-import { customers } from "../data/customers";
-
 import CustomerHeader from "../components/customers/CustomerHeader";
 import CustomerFilters from "../components/customers/CustomerFilters";
 import CustomerTable from "../components/customers/CustomerTable";
 import CustomerPagination from "../components/customers/CustomerPagination";
 
+import CustomerTableSkeleton from "../components/customers/CustomerTableSkeleton";
+import CustomerEmptyState from "../components/customers/CustomerEmptyState";
+import { useCustomers } from "../hooks/queries/useCustomers";
+
 const ITEMS_PER_PAGE = 5;
 
 const Customers = () => {
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(customers.length / ITEMS_PER_PAGE);
+  // Search
+  const [search, setSearch] = useState("");
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  // Hair Color Filter
+  const [hairColor, setHairColor] = useState("all");
 
-  const paginatedCustomers = customers.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE,
-  );
+  // Sort
+  const [sortBy, setSortBy] = useState("default");
+
+  const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  const { data, isLoading, isError, error } = useCustomers({
+    limit: ITEMS_PER_PAGE,
+    skip,
+    search,
+    hairColor,
+    sortBy,
+  });
+
+  const customers = data?.users ?? [];
+  const totalItems = data?.total ?? 0;
+
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+  // Search
+  const handleSearchChange = (value) => {
+    setSearch(value);
+    setCurrentPage(1);
+  };
+
+  // Hair color filter
+  const handleHairColorChange = (value) => {
+    setHairColor(value);
+    setCurrentPage(1);
+  };
+
+  // Sort
+  const handleSortChange = (value) => {
+    setSortBy(value);
+    setCurrentPage(1);
+  };
+
+  const hasFilters =
+    search.trim() !== "" || hairColor !== "all" || sortBy !== "default";
+
+  const handleClearFilters = () => {
+    setSearch("");
+    setHairColor("all");
+    setSortBy("default");
+    setCurrentPage(1);
+  };
 
   return (
     <div className="w-full">
@@ -27,7 +73,7 @@ const Customers = () => {
 
       <div
         className="
-          mt-6
+          mt-4
           overflow-hidden
           rounded-2xl
           border border-border
@@ -35,17 +81,55 @@ const Customers = () => {
           shadow-sm
         "
       >
-        <CustomerFilters />
-
-        <CustomerTable customers={paginatedCustomers} />
-
-        <CustomerPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={customers.length}
-          itemsPerPage={ITEMS_PER_PAGE}
-          onPageChange={setCurrentPage}
+        <CustomerFilters
+          search={search}
+          hairColor={hairColor}
+          sortBy={sortBy}
+          onSearchChange={handleSearchChange}
+          onHairColorChange={handleHairColorChange}
+          onSortChange={handleSortChange}
+          hasFilters={hasFilters}
+          handleClearFilters={handleClearFilters}
         />
+
+        {/* Loading */}
+        {isLoading && <CustomerTableSkeleton rows={ITEMS_PER_PAGE} />}
+
+        {/* Error */}
+        {isError && (
+          <div className="flex min-h-[300px] flex-col items-center justify-center px-6 text-center">
+            <p className="text-sm font-semibold text-error">
+              Failed to load customers
+            </p>
+
+            <p className="mt-1 text-xs text-text-muted">
+              {error?.message || "Something went wrong."}
+            </p>
+          </div>
+        )}
+
+        {/* Empty */}
+        {!isLoading && !isError && customers.length === 0 && (
+          <CustomerEmptyState
+            hasFilters={hasFilters}
+            onClearFilters={handleClearFilters}
+          />
+        )}
+
+        {/* Success */}
+        {!isLoading && !isError && customers.length > 0 && (
+          <>
+            <CustomerTable customers={customers} />
+
+            <CustomerPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={setCurrentPage}
+            />
+          </>
+        )}
       </div>
     </div>
   );

@@ -5,14 +5,88 @@ import OrdersChart from "../components/charts/OrdersChart";
 import RevenueChart from "../components/charts/RevenueChart";
 import UsersChart from "../components/charts/UsersChart";
 
-import {
-  ordersData,
-  revenueData,
-  stats,
-  usersData,
-} from "../data/dashboardData";
+import { useDashboardStats } from "../hooks/queries/useDashboardStats";
 
 const Dashboard = () => {
+  const { data, isLoading, isError, error } = useDashboardStats();
+
+  if (isLoading) {
+    return (
+      <div className="w-full">
+        <div
+          className="
+            grid
+            grid-cols-1
+            gap-4
+            sm:grid-cols-2
+            xl:grid-cols-4
+          "
+        >
+          {[1, 2, 3, 4].map((item) => (
+            <div
+              key={item}
+              className="
+                h-[155px]
+                animate-pulse
+                rounded-2xl
+                border
+                border-border
+                bg-surface
+              "
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex min-h-[300px] items-center justify-center">
+        <div className="text-center">
+          <p className="text-sm font-semibold text-error">
+            Failed to load dashboard
+          </p>
+
+          <p className="mt-1 text-xs text-text-muted">
+            {error?.message || "Something went wrong."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const stats = [
+    {
+      id: "revenue",
+      title: "Revenue",
+      value: `₹${data.revenue.toLocaleString("en-IN")}`,
+      change: "+12.5%",
+      trend: "up",
+    },
+    {
+      id: "users",
+      title: "Users",
+      value: data.users.toLocaleString(),
+      change: "+8.2%",
+      trend: "up",
+    },
+    {
+      id: "orders",
+      title: "Orders",
+      value: data.orders.toLocaleString(),
+      change: "+5.4%",
+      trend: "down",
+    },
+    {
+      id: "conversion",
+      title: "Conversion",
+      value: data.conversion,
+      change: "1.2%",
+      trend: "up",
+    },
+  ];
+
   return (
     <div className="w-full">
       {/* KPI Cards */}
@@ -40,9 +114,9 @@ const Dashboard = () => {
           xl:grid-cols-2
         "
       >
-        <RevenueChart data={revenueData} />
+        <RevenueChart />
 
-        <UsersChart data={usersData} />
+        <UsersChart />
       </section>
 
       {/* Conversion + Orders */}
@@ -57,7 +131,7 @@ const Dashboard = () => {
       >
         <ConversionCard />
 
-        <OrdersChart data={ordersData} />
+        <OrdersChart />
       </section>
     </div>
   );

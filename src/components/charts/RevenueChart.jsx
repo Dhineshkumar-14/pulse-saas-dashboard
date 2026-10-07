@@ -8,11 +8,84 @@ import {
   Tooltip,
 } from "recharts";
 
-const RevenueChart = ({ data = [] }) => {
+import { useRevenueChart } from "../../hooks/queries/useRevenueChart";
+
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const RevenueChart = () => {
+  const { data, isLoading, isError } = useRevenueChart();
+
+  if (isLoading) {
+    return (
+      <div
+        className="
+          h-[360px]
+          animate-pulse
+          rounded-2xl
+          border border-border
+          bg-surface
+        "
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <div
+        className="
+          flex
+          h-[360px]
+          items-center
+          justify-center
+          rounded-2xl
+          border border-border
+          bg-surface
+        "
+      >
+        <p className="text-sm text-text-muted">Failed to load revenue data</p>
+      </div>
+    );
+  }
+
+  const carts = data?.carts ?? [];
+
+  /*
+   * DummyJSON does not provide order dates.
+   * We distribute the available cart revenue across
+   * 12 monthly buckets for dashboard visualization.
+   */
+  const monthlyRevenue = MONTHS.map((month, index) => {
+    const monthCarts = carts.filter(
+      (_, cartIndex) => cartIndex % MONTHS.length === index,
+    );
+
+    const revenue = monthCarts.reduce(
+      (total, cart) => total + (cart.discountedTotal || 0),
+      0,
+    );
+
+    return {
+      month,
+      revenue,
+    };
+  });
+
   return (
     <div
       className="
-        w-full
         overflow-hidden
         rounded-2xl
         border border-border
@@ -23,230 +96,79 @@ const RevenueChart = ({ data = [] }) => {
       "
     >
       {/* Header */}
-      <div
-        className="
-          mb-5
-          flex
-          flex-col
-          gap-3
-          sm:mb-6
-          sm:flex-row
-          sm:items-start
-          sm:justify-between
-        "
-      >
-        <div>
-          <div className="flex items-center gap-2">
-            <h2
-              className="
-                font-heading
-                text-sm
-                font-semibold
-                tracking-tight
-                text-text-primary
-                sm:text-base
-              "
-            >
-              Revenue Overview
-            </h2>
+      <div className="mb-6">
+        <h3 className="text-sm font-semibold text-text-primary">Revenue</h3>
 
-            <span
-              className="
-                rounded-full
-                bg-primary-soft
-                px-2
-                py-0.5
-                text-[10px]
-                font-semibold
-                text-primary
-                sm:text-[11px]
-              "
-            >
-              +12.5%
-            </span>
-          </div>
-
-          <p
-            className="
-              mt-1
-              text-[11px]
-              leading-5
-              text-text-muted
-              sm:text-xs
-            "
-          >
-            Revenue performance over the selected period
-          </p>
-        </div>
-
-        {/* Current Revenue */}
-        <div className="sm:text-right">
-          <p className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
-            Total Revenue
-          </p>
-
-          <p
-            className="
-              mt-0.5
-              font-heading
-              text-lg
-              font-bold
-              tracking-tight
-              text-text-primary
-              sm:text-xl
-            "
-          >
-            $128,450
-          </p>
-        </div>
+        <p className="mt-1 text-xs text-text-muted">
+          Revenue generated from orders
+        </p>
       </div>
 
       {/* Chart */}
-      <div
-        className="
-          h-[230px]
-          w-full
-          sm:h-[270px]
-          lg:h-[300px]
-        "
-      >
+      <div className="h-[280px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={data}
+            data={monthlyRevenue}
             margin={{
-              top: 8,
-              right: 4,
-              left: -18,
+              top: 10,
+              right: 10,
+              left: 5,
               bottom: 0,
             }}
           >
-            {/* Grid */}
-            <CartesianGrid
-              stroke="var(--pulse-chart-grid)"
-              strokeDasharray="4 4"
-              vertical={false}
-              opacity={0.7}
-            />
+            <defs>
+              <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopOpacity={0.2} />
 
-            {/* X Axis */}
+                <stop offset="100%" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+
             <XAxis
               dataKey="month"
               axisLine={false}
               tickLine={false}
-              tickMargin={10}
-              minTickGap={18}
               tick={{
-                fill: "var(--pulse-text-muted)",
                 fontSize: 11,
-                fontWeight: 500,
               }}
             />
 
-            {/* Y Axis */}
             <YAxis
               axisLine={false}
               tickLine={false}
-              width={48}
-              tickMargin={4}
               tick={{
-                fill: "var(--pulse-text-muted)",
-                fontSize: 10,
-                fontWeight: 500,
+                fontSize: 11,
               }}
-              tickFormatter={(value) => `$${value / 1000}k`}
+              tickFormatter={(value) => {
+                if (value >= 1000) {
+                  return `₹${Math.round(value / 1000)}K`;
+                }
+
+                return `₹${value}`;
+              }}
             />
 
-            {/* Tooltip */}
             <Tooltip
               cursor={{
-                stroke: "var(--pulse-primary)",
-                strokeWidth: 1,
                 strokeDasharray: "4 4",
-                opacity: 0.35,
-              }}
-              contentStyle={{
-                border: "1px solid var(--pulse-border)",
-                borderRadius: "12px",
-                background: "var(--pulse-surface)",
-                boxShadow: "var(--pulse-shadow-md)",
-                padding: "10px 12px",
-              }}
-              labelStyle={{
-                color: "var(--pulse-text-muted)",
-                fontSize: "11px",
-                fontWeight: 500,
-                marginBottom: "4px",
-              }}
-              itemStyle={{
-                color: "var(--pulse-text-primary)",
-                fontSize: "12px",
-                fontWeight: 600,
               }}
               formatter={(value) => [
-                `$${Number(value).toLocaleString()}`,
+                `₹${Number(value).toLocaleString("en-IN")}`,
                 "Revenue",
               ]}
+              labelFormatter={(label) => `${label} revenue`}
             />
 
-            {/* Gradient */}
-            <defs>
-              <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="0%"
-                  stopColor="var(--pulse-primary)"
-                  stopOpacity={0.22}
-                />
-
-                <stop
-                  offset="100%"
-                  stopColor="var(--pulse-primary)"
-                  stopOpacity={0}
-                />
-              </linearGradient>
-            </defs>
-
-            {/* Revenue Area */}
             <Area
               type="monotone"
               dataKey="revenue"
-              stroke="var(--pulse-chart-primary)"
+              strokeWidth={2}
               fill="url(#revenueGradient)"
-              strokeWidth={2.5}
-              activeDot={{
-                r: 5,
-                fill: "var(--pulse-chart-primary)",
-                stroke: "var(--pulse-surface)",
-                strokeWidth: 3,
-              }}
-              dot={false}
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
-
-      {/* Footer */}
-      <div
-        className="
-          mt-3
-          flex
-          items-center
-          justify-between
-          border-t
-          border-border-light
-          pt-3
-        "
-      >
-        <span className="text-[10px] text-text-muted sm:text-xs">
-          Jan — Jun 2026
-        </span>
-
-        <div className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-primary" />
-
-          <span className="text-[10px] font-medium text-text-muted sm:text-xs">
-            Revenue
-          </span>
-        </div>
       </div>
     </div>
   );

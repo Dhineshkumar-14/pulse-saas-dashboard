@@ -1,9 +1,24 @@
-import { Mail, Phone, MoreHorizontal } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MoreHorizontal,
+  MapPin,
+  Building2,
+  Palette,
+} from "lucide-react";
 
 const CustomerTable = ({ customers = [] }) => {
+  const hairColorStyles = {
+    Black: "bg-surface-hover text-text-primary",
+    Brown: "bg-warning-soft text-warning",
+    Blond: "bg-primary-soft text-primary",
+    Red: "bg-error-soft text-error",
+    White: "bg-surface-muted text-text-secondary",
+  };
+
   return (
     <div className="w-full overflow-x-auto">
-      <table className="w-full min-w-[850px] border-collapse">
+      <table className="w-full min-w-[1050px] border-collapse">
         <thead>
           <tr className="border-b border-border-light bg-surface-muted">
             <th className="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider text-text-muted">
@@ -15,15 +30,19 @@ const CustomerTable = ({ customers = [] }) => {
             </th>
 
             <th className="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-              Status
+              Hair Color
             </th>
 
             <th className="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-              Joined
+              Company
+            </th>
+
+            <th className="px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+              Location
             </th>
 
             <th className="px-5 py-3.5 text-right text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-              Total Spent
+              Age
             </th>
 
             <th className="w-12 px-4 py-3.5" />
@@ -32,7 +51,12 @@ const CustomerTable = ({ customers = [] }) => {
 
         <tbody className="divide-y divide-border-light">
           {customers.map((customer) => {
-            const isActive = customer.status === "Active";
+            const name = `${customer.firstName} ${customer.lastName}`;
+
+            const hairColor = customer.hair?.color || "Unknown";
+
+            const hairColorClass =
+              hairColorStyles[hairColor] || "bg-surface-hover text-text-muted";
 
             return (
               <tr
@@ -51,18 +75,27 @@ const CustomerTable = ({ customers = [] }) => {
                       className="
                         flex size-10 shrink-0
                         items-center justify-center
+                        overflow-hidden
                         rounded-full
                         bg-primary-soft
                       "
                     >
-                      <span className="text-sm font-semibold text-primary">
-                        {customer.name.charAt(0)}
-                      </span>
+                      {customer.image ? (
+                        <img
+                          src={customer.image}
+                          alt={name}
+                          className="size-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-semibold text-primary">
+                          {customer.firstName?.charAt(0)}
+                        </span>
+                      )}
                     </div>
 
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-text-primary">
-                        {customer.name}
+                        {name}
                       </p>
 
                       <p className="mt-0.5 text-xs text-text-muted">
@@ -99,7 +132,7 @@ const CustomerTable = ({ customers = [] }) => {
                   </div>
                 </td>
 
-                {/* Status */}
+                {/* Hair Color */}
                 <td className="px-5 py-4">
                   <span
                     className={`
@@ -111,36 +144,54 @@ const CustomerTable = ({ customers = [] }) => {
                       py-1
                       text-[11px]
                       font-semibold
-                      ${
-                        isActive
-                          ? "bg-success-soft text-success"
-                          : "bg-surface-hover text-text-muted"
-                      }
+                      capitalize
+                      ${hairColorClass}
                     `}
                   >
-                    <span
-                      className={`
-                        size-1.5
-                        rounded-full
-                        ${isActive ? "bg-success" : "bg-text-subtle"}
-                      `}
+                    <Palette className="size-3" strokeWidth={1.8} />
+
+                    {hairColor}
+                  </span>
+                </td>
+
+                {/* Company */}
+                <td className="px-5 py-4">
+                  <div className="flex max-w-[190px] items-center gap-2">
+                    <Building2
+                      className="size-3.5 shrink-0 text-text-subtle"
+                      strokeWidth={1.8}
                     />
 
-                    {customer.status}
-                  </span>
+                    <span className="truncate text-xs font-medium text-text-secondary">
+                      {customer.company?.name || "—"}
+                    </span>
+                  </div>
                 </td>
 
-                {/* Joined */}
+                {/* Location */}
                 <td className="px-5 py-4">
-                  <span className="text-xs font-medium text-text-secondary">
-                    {customer.joined}
-                  </span>
+                  <div className="flex max-w-[180px] items-center gap-2">
+                    <MapPin
+                      className="size-3.5 shrink-0 text-text-subtle"
+                      strokeWidth={1.8}
+                    />
+
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-medium text-text-secondary">
+                        {customer.address?.city || "—"}
+                      </p>
+
+                      <p className="truncate text-[10px] text-text-muted">
+                        {customer.address?.country || "—"}
+                      </p>
+                    </div>
+                  </div>
                 </td>
 
-                {/* Spent */}
+                {/* Age */}
                 <td className="px-5 py-4 text-right">
                   <span className="font-heading text-sm font-semibold text-text-primary">
-                    ${customer.spent.toLocaleString()}
+                    {customer.age}
                   </span>
                 </td>
 
@@ -148,7 +199,7 @@ const CustomerTable = ({ customers = [] }) => {
                 <td className="px-4 py-4">
                   <button
                     type="button"
-                    aria-label={`Actions for ${customer.name}`}
+                    aria-label={`Actions for ${name}`}
                     className="
                       flex size-8
                       items-center justify-center

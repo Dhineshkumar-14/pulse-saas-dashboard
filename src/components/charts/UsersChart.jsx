@@ -8,7 +8,76 @@ import {
   Tooltip,
 } from "recharts";
 
-const UsersChart = ({ data = [] }) => {
+import { useUsersChart } from "../../hooks/queries/useUsersChart";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+
+const UsersChart = () => {
+  const { data, isLoading, isError } = useUsersChart();
+
+  if (isLoading) {
+    return (
+      <div
+        className="
+          h-[360px]
+          animate-pulse
+          rounded-2xl
+          border
+          border-border
+          bg-surface
+        "
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <div
+        className="
+          flex
+          h-[360px]
+          items-center
+          justify-center
+          rounded-2xl
+          border
+          border-border
+          bg-surface
+        "
+      >
+        <p className="text-sm text-text-muted">Failed to load user data</p>
+      </div>
+    );
+  }
+
+  const users = data?.users ?? [];
+  const totalUsers = data?.total ?? users.length;
+
+  /*
+   * DummyJSON doesn't provide historical user acquisition dates.
+   * We distribute the available users across six buckets
+   * for dashboard visualization.
+   */
+  const usersPerMonth = Math.ceil(users.length / MONTHS.length);
+
+  let runningTotal = 0;
+
+  const chartData = MONTHS.map((month, index) => {
+    const start = index * usersPerMonth;
+    const end = Math.min(start + usersPerMonth, users.length);
+
+    runningTotal += end - start;
+
+    return {
+      month,
+      users: runningTotal,
+    };
+  });
+
+  // Make sure the final point represents the API total.
+  if (chartData.length > 0) {
+    chartData[chartData.length - 1].users = totalUsers;
+  }
+
   return (
     <div
       className="
@@ -62,7 +131,7 @@ const UsersChart = ({ data = [] }) => {
                 sm:text-[11px]
               "
             >
-              +8.2%
+              Growth
             </span>
           </div>
 
@@ -104,7 +173,7 @@ const UsersChart = ({ data = [] }) => {
               sm:text-xl
             "
           >
-            24,892
+            {totalUsers.toLocaleString()}
           </p>
         </div>
       </div>
@@ -120,7 +189,7 @@ const UsersChart = ({ data = [] }) => {
       >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            data={data}
+            data={chartData}
             margin={{
               top: 8,
               right: 4,
@@ -128,7 +197,6 @@ const UsersChart = ({ data = [] }) => {
               bottom: 0,
             }}
           >
-            {/* Grid */}
             <CartesianGrid
               stroke="var(--pulse-chart-grid)"
               strokeDasharray="4 4"
@@ -136,7 +204,6 @@ const UsersChart = ({ data = [] }) => {
               opacity={0.7}
             />
 
-            {/* X Axis */}
             <XAxis
               dataKey="month"
               axisLine={false}
@@ -150,7 +217,6 @@ const UsersChart = ({ data = [] }) => {
               }}
             />
 
-            {/* Y Axis */}
             <YAxis
               axisLine={false}
               tickLine={false}
@@ -166,7 +232,6 @@ const UsersChart = ({ data = [] }) => {
               }
             />
 
-            {/* Tooltip */}
             <Tooltip
               cursor={{
                 stroke: "var(--pulse-primary)",
@@ -195,7 +260,6 @@ const UsersChart = ({ data = [] }) => {
               formatter={(value) => [Number(value).toLocaleString(), "Users"]}
             />
 
-            {/* User Growth Line */}
             <Line
               type="monotone"
               dataKey="users"
@@ -211,31 +275,6 @@ const UsersChart = ({ data = [] }) => {
             />
           </LineChart>
         </ResponsiveContainer>
-      </div>
-
-      {/* Footer */}
-      <div
-        className="
-          mt-3
-          flex
-          items-center
-          justify-between
-          border-t
-          border-border-light
-          pt-3
-        "
-      >
-        <span className="text-[10px] text-text-muted sm:text-xs">
-          Jan — Jun 2026
-        </span>
-
-        <div className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-primary" />
-
-          <span className="text-[10px] font-medium text-text-muted sm:text-xs">
-            Active Users
-          </span>
-        </div>
       </div>
     </div>
   );
