@@ -1,10 +1,22 @@
+import Navbar from "../components/landing/Navbar";
+import Hero from "../components/landing/Hero";
+
 const Home = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <h1 className="text-4xl font-bold text-text-primary">
-        Pulse
-      </h1>
-    </div>
+    <>
+      <Navbar />
+
+      <main>
+        <Hero />
+
+        {/* Features */}
+        {/* How It Works */}
+        {/* Testimonials */}
+        {/* Pricing */}
+        {/* FAQ */}
+        {/* CTA */}
+      </main>
+    </>
   );
 };
 

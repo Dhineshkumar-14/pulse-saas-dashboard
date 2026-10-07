@@ -9,10 +9,10 @@ import DashboardLayout from "../layouts/DashboardLayout";
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public */}
+      {/* ================= PUBLIC ================= */}
       <Route path="/" element={<Home />} />
 
-      {/* Dashboard Parent Route */}
+      {/* ================= DASHBOARD ================= */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         {/* /dashboard */}
         <Route index element={<Dashboard />} />
