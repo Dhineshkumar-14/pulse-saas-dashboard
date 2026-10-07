@@ -1,292 +1,163 @@
-import { ArrowRight, Check, Play, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+
+const trustPoints = [
+  "No credit card required",
+  "14-day free trial",
+  "Cancel anytime",
+];
 
 const Hero = () => {
   return (
-    <section className="relative isolate overflow-hidden bg-background">
-      {/* =====================================================
-          BACKGROUND
-      ===================================================== */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        {/* Grid */}
-        <div
-          className="
-            absolute inset-0
-            bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)]
-            bg-[size:4rem_4rem]
-            opacity-20
-            [mask-image:linear-gradient(to_bottom,black_0%,transparent_75%)]
-          "
-        />
-
-        {/* Main glow */}
-        <div
-          className="
-            absolute
-            left-1/2
-            top-[-220px]
-            h-[420px]
-            w-[420px]
-            -translate-x-1/2
-            rounded-full
-            bg-primary/10
-            blur-[120px]
-            sm:h-[550px]
-            sm:w-[550px]
-          "
-        />
-
-        {/* Left glow */}
-        <div
-          className="
-            absolute
-            left-[-180px]
-            top-[35%]
-            h-[350px]
-            w-[350px]
-            rounded-full
-            bg-blue-500/5
-            blur-[120px]
-          "
-        />
-
-        {/* Right glow */}
-        <div
-          className="
-            absolute
-            right-[-180px]
-            top-[40%]
-            h-[350px]
-            w-[350px]
-            rounded-full
-            bg-purple-500/5
-            blur-[120px]
-          "
-        />
-      </div>
-
+    <section className="relative bg-background pt-16">
       <div
         className="
           mx-auto
-          max-w-7xl
+          max-w-[var(--pulse-container-xl)]
           px-4
-          pb-16
-          pt-12
+          py-12
+          sm:py-16
+          lg:py-20
           sm:px-6
-          sm:pb-20
-          sm:pt-20
           lg:px-8
-          lg:pb-20
-          lg:pt-20
         "
       >
-        {/* =====================================================
-            HERO CONTENT
-        ===================================================== */}
         <div className="mx-auto max-w-4xl text-center">
-          {/* Badge */}
+          {/* Eyebrow */}
           <div
             className="
-              mb-6
+              mb-5
               inline-flex
               items-center
               gap-2
               rounded-full
               border
               border-border
-              bg-background/80
+              bg-surface
               px-3
               py-1.5
               text-xs
               font-medium
-              text-muted-foreground
-              shadow-sm
-              backdrop-blur-xl
+              text-text-secondary
             "
           >
-            <span
-              className="
-                flex
-                h-5
-                w-5
-                items-center
-                justify-center
-                rounded-full
-                bg-primary
-                text-primary-foreground
-              "
-            >
-              <Sparkles size={11} />
-            </span>
-
-            <span>Smarter analytics for modern teams</span>
-
-            <ArrowRight size={13} className="hidden sm:block" />
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Smarter analytics for modern teams
           </div>
 
           {/* Heading */}
           <h1
             className="
-              text-balance
-              text-[2.7rem]
-              font-bold
-              leading-[0.98]
-              tracking-[-0.055em]
-              text-foreground
+              font-heading
+              text-4xl
+              font-extrabold
+              leading-[1.05]
+              tracking-[-0.045em]
+              text-text-primary
               sm:text-6xl
               lg:text-7xl
-              xl:text-[80px]
             "
           >
             Everything you need
-            <br className="hidden sm:block" />
-            <span className="text-muted-foreground">
-              to grow with confidence.
-            </span>
+            <br />
+            <span className="text-primary">to grow with confidence.</span>
           </h1>
 
           {/* Description */}
           <p
             className="
               mx-auto
-              mt-6
+              mt-5
               max-w-2xl
               text-sm
               leading-6
-              text-muted-foreground
-              sm:mt-7
+              text-text-secondary
+              sm:mt-6
               sm:text-base
               sm:leading-7
-              lg:text-lg
-              lg:leading-8
             "
           >
             Pulse brings your revenue, customers, orders, and conversion
-            insights together in one beautiful workspace. Understand your
-            business and make better decisions, faster.
+            insights together in one powerful workspace.
           </p>
 
-          {/* =====================================================
-              CTA
-          ===================================================== */}
-          <div
-            className="
-              mt-8
-              flex
-              flex-col
-              items-stretch
-              justify-center
-              gap-3
-              sm:flex-row
-              sm:items-center
-            "
-          >
-            {/* Primary */}
-            <a
-              href="/dashboard"
-              className="
-                group
-                inline-flex
-                items-center
-                justify-center
-                gap-2
-                rounded-xl
-                bg-primary
-                px-6
-                py-3.5
-                text-sm
-                font-semibold
-                text-primary-foreground
-                shadow-lg
-                shadow-primary/10
-                transition-all
-                duration-200
-                hover:-translate-y-0.5
-                hover:shadow-xl
-              "
-            >
-              Start for free
-              <ArrowRight
-                size={17}
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              />
-            </a>
-
-            {/* Secondary */}
-            <button
-              type="button"
-              className="
-                inline-flex
-                items-center
-                justify-center
-                gap-2
-                rounded-xl
-                border
-                border-border
-                bg-background/80
-                px-6
-                py-3.5
-                text-sm
-                font-semibold
-                text-foreground
-                backdrop-blur
-                transition-all
-                duration-200
-                hover:bg-muted
-              "
-            >
-              <span
-                className="
-                  flex
-                  h-6
-                  w-6
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-muted
-                "
-              >
-                <Play size={10} fill="currentColor" />
-              </span>
-              See how it works
-            </button>
-          </div>
-
-          {/* Trust points */}
+          {/* Actions */}
           <div
             className="
               mt-7
+              flex
+              flex-col
+              justify-center
+              gap-3
+              sm:mt-8
+              sm:flex-row
+            "
+          >
+            <a
+              href="/dashboard"
+              className="
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                rounded-[var(--pulse-radius-md)]
+                bg-primary
+                px-6
+                py-3
+                text-sm
+                font-semibold
+                text-primary-foreground
+                shadow-primary
+                transition-all
+                duration-[var(--pulse-transition-normal)]
+                hover:-translate-y-0.5
+                hover:bg-primary-hover
+              "
+            >
+              Start for free
+              <ArrowRight size={16} />
+            </a>
+
+            <a
+              href="#product"
+              className="
+                inline-flex
+                items-center
+                justify-center
+                rounded-[var(--pulse-radius-md)]
+                border
+                border-border
+                bg-surface
+                px-6
+                py-3
+                text-sm
+                font-semibold
+                text-text-primary
+                transition-all
+                duration-[var(--pulse-transition-normal)]
+                hover:border-border-hover
+                hover:bg-surface-hover
+              "
+            >
+              Explore product
+            </a>
+          </div>
+
+          {/* Trust */}
+          <div
+            className="
+              mt-5
               flex
               flex-wrap
               items-center
               justify-center
               gap-x-5
               gap-y-2
+              text-xs
+              text-text-muted
             "
           >
-            {[
-              "No credit card required",
-              "14-day free trial",
-              "Cancel anytime",
-            ].map((item) => (
-              <div
-                key={item}
-                className="
-                  flex
-                  items-center
-                  gap-1.5
-                  text-[11px]
-                  text-muted-foreground
-                  sm:text-xs
-                "
-              >
-                <Check
-                  size={13}
-                  strokeWidth={2.5}
-                  className="text-emerald-500"
-                />
-
-                {item}
-              </div>
+            {trustPoints.map((item) => (
+              <span key={item}>{item}</span>
             ))}
           </div>
         </div>
