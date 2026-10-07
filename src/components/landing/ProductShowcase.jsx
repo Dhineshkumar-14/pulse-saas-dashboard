@@ -174,7 +174,7 @@ const ProductShowcase = () => {
                   "
                 >
                   <img
-                    src="/images/pulse-dashboard.png"
+                    src="/images/pulse-dashboard.webp"
                     alt="Pulse analytics dashboard"
                     className="
                       block
