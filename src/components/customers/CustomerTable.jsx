@@ -32,7 +32,9 @@ const CustomerTable = ({ customers = [] }) => {
 
         <tbody className="divide-y divide-border-light">
           {customers.map((customer) => {
-            const isActive = customer.status === "Active";
+            const name = `${customer.firstName} ${customer.lastName}`;
+
+            const isActive = customer.role === "admin";
 
             return (
               <tr
@@ -51,18 +53,27 @@ const CustomerTable = ({ customers = [] }) => {
                       className="
                         flex size-10 shrink-0
                         items-center justify-center
+                        overflow-hidden
                         rounded-full
                         bg-primary-soft
                       "
                     >
-                      <span className="text-sm font-semibold text-primary">
-                        {customer.name.charAt(0)}
-                      </span>
+                      {customer.image ? (
+                        <img
+                          src={customer.image}
+                          alt={name}
+                          className="size-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-semibold text-primary">
+                          {customer.firstName?.charAt(0)}
+                        </span>
+                      )}
                     </div>
 
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-text-primary">
-                        {customer.name}
+                        {name}
                       </p>
 
                       <p className="mt-0.5 text-xs text-text-muted">
@@ -126,21 +137,21 @@ const CustomerTable = ({ customers = [] }) => {
                       `}
                     />
 
-                    {customer.status}
+                    {customer.role}
                   </span>
                 </td>
 
                 {/* Joined */}
                 <td className="px-5 py-4">
                   <span className="text-xs font-medium text-text-secondary">
-                    {customer.joined}
+                    —
                   </span>
                 </td>
 
                 {/* Spent */}
                 <td className="px-5 py-4 text-right">
                   <span className="font-heading text-sm font-semibold text-text-primary">
-                    ${customer.spent.toLocaleString()}
+                    —
                   </span>
                 </td>
 
@@ -148,7 +159,7 @@ const CustomerTable = ({ customers = [] }) => {
                 <td className="px-4 py-4">
                   <button
                     type="button"
-                    aria-label={`Actions for ${customer.name}`}
+                    aria-label={`Actions for ${name}`}
                     className="
                       flex size-8
                       items-center justify-center
