@@ -10,7 +10,7 @@ const DashboardLayout = () => {
       <div className="min-h-screen pb-16 md:ml-64 md:pb-0">
         <Header />
 
-        <main className="p-4 md:p-6 lg:p-8">
+        <main className="p-4 md:p-6 lg:p-6">
           <Outlet />
         </main>
       </div>

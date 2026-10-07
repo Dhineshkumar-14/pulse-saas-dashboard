@@ -6,6 +6,8 @@ import CustomerTable from "../components/customers/CustomerTable";
 import CustomerPagination from "../components/customers/CustomerPagination";
 
 import { useCustomers } from "../hooks/queries/useCustomers";
+import CustomerTableSkeleton from "../components/customers/CustomerTableSkeleton";
+import CustomerEmptyState from "../components/customers/CustomerEmptyState";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -55,13 +57,23 @@ const Customers = () => {
     setCurrentPage(1);
   };
 
+  const hasFilters =
+    search.trim() !== "" || hairColor !== "all" || sortBy !== "default";
+
+  const handleClearFilters = () => {
+    setSearch("");
+    setHairColor("all");
+    setSortBy("default");
+    setCurrentPage(1);
+  };
+
   return (
     <div className="w-full">
       <CustomerHeader />
 
       <div
         className="
-          mt-6
+          mt-4
           overflow-hidden
           rounded-2xl
           border border-border
@@ -76,14 +88,12 @@ const Customers = () => {
           onSearchChange={handleSearchChange}
           onHairColorChange={handleHairColorChange}
           onSortChange={handleSortChange}
+          hasFilters={hasFilters}
+          handleClearFilters={handleClearFilters}
         />
 
         {/* Loading */}
-        {isLoading && (
-          <div className="flex min-h-[300px] items-center justify-center">
-            <p className="text-sm text-text-muted">Loading customers...</p>
-          </div>
-        )}
+        {isLoading && <CustomerTableSkeleton rows={ITEMS_PER_PAGE} />}
 
         {/* Error */}
         {isError && (
@@ -100,15 +110,10 @@ const Customers = () => {
 
         {/* Empty */}
         {!isLoading && !isError && customers.length === 0 && (
-          <div className="flex min-h-[300px] flex-col items-center justify-center px-6 text-center">
-            <p className="text-sm font-semibold text-text-primary">
-              No customers found
-            </p>
-
-            <p className="mt-1 text-xs text-text-muted">
-              Try changing your search or filters.
-            </p>
-          </div>
+          <CustomerEmptyState
+            hasFilters={hasFilters}
+            onClearFilters={handleClearFilters}
+          />
         )}
 
         {/* Success */}

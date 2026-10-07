@@ -13,16 +13,9 @@ const CustomerFilters = ({
   onSearchChange,
   onHairColorChange,
   onSortChange,
+  hasFilters,
+  handleClearFilters,
 }) => {
-  const hasFilters =
-    search.trim() !== "" || hairColor !== "all" || sortBy !== "default";
-
-  const handleClearFilters = () => {
-    onSearchChange("");
-    onHairColorChange("all");
-    onSortChange("default");
-  };
-
   return (
     <div
       className="

@@ -10,6 +10,7 @@ const CustomerHeader = () => {
         sm:flex-row
         sm:items-center
         sm:justify-between
+      mx-2
       "
     >
       <div>
