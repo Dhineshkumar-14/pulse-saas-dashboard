@@ -1,29 +1,72 @@
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, BarChart3, Check, TrendingUp, Users } from "lucide-react";
+
+const features = [
+  "Track revenue and business performance",
+  "Understand customer growth",
+  "Monitor orders and conversions",
+  "Make data-driven decisions faster",
+];
 
 const ProductShowcase = () => {
   return (
-    <section id="product" className="bg-background py-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Heading */}
+    <section
+      id="product"
+      className="
+        border-t
+        border-border-light
+        bg-surface
+        py-20
+        sm:py-24
+        lg:py-28
+      "
+    >
+      <div
+        className="
+          mx-auto
+          max-w-[var(--pulse-container-xl)]
+          px-4
+          sm:px-6
+          lg:px-8
+        "
+      >
+        {/* Section heading */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold text-primary">PRODUCT</p>
+          <div
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-border
+              bg-surface-muted
+              px-3
+              py-1.5
+              text-xs
+              font-semibold
+              text-primary
+            "
+          >
+            <BarChart3 size={13} />
+            PRODUCT
+          </div>
 
           <h2
             className="
-              mt-3
+              mt-5
+              font-heading
               text-3xl
-              font-bold
-              tracking-tight
-              text-foreground
+              font-extrabold
+              leading-tight
+              tracking-[-0.035em]
+              text-text-primary
               sm:text-4xl
               lg:text-5xl
             "
           >
             Everything you need to
-            <span className="text-muted-foreground">
-              {" "}
-              understand your business.
-            </span>
+            <br className="hidden sm:block" />
+            <span className="text-primary"> understand your business.</span>
           </h2>
 
           <p
@@ -33,187 +76,294 @@ const ProductShowcase = () => {
               max-w-2xl
               text-sm
               leading-6
-              text-muted-foreground
+              text-text-secondary
               sm:text-base
               sm:leading-7
             "
           >
-            Pulse brings your revenue, customers, orders, and business insights
-            together in one simple workspace.
+            See your revenue, customers, orders, and conversion performance in
+            one clear workspace built for better decisions.
           </p>
         </div>
 
-        {/* Product Showcase */}
+        {/* Main product showcase */}
         <div
           className="
-            mt-12
+            mt-14
             grid
             items-center
-            gap-10
-            lg:grid-cols-2
+            gap-12
+            lg:mt-20
+            lg:grid-cols-[1.25fr_0.75fr]
             lg:gap-16
-            lg:mt-16
           "
         >
-          {/* Product Image */}
-          <div
-            className="
-              relative
-              overflow-hidden
-              rounded-2xl
-              border
-              border-border
-              bg-muted/30
-              p-2
-              shadow-[0_25px_70px_-25px_rgba(0,0,0,0.2)]
-              sm:p-3
-            "
-          >
-            {/* Glow */}
+          {/* Dashboard preview */}
+          <div className="relative">
+            {/* Background accent */}
             <div
               className="
                 pointer-events-none
                 absolute
-                left-1/2
-                top-1/2
+                -inset-4
                 -z-10
-                h-2/3
-                w-2/3
-                -translate-x-1/2
-                -translate-y-1/2
-                rounded-full
-                bg-primary/10
-                blur-[80px]
+                rounded-[var(--pulse-radius-3xl)]
+                bg-primary-soft/50
+                blur-2xl
               "
             />
 
-            <div className="overflow-hidden rounded-xl border border-border bg-background">
-              {/* Browser bar */}
+            <div
+              className="
+                overflow-hidden
+                rounded-[var(--pulse-radius-2xl)]
+                border
+                border-border
+                bg-surface
+                shadow-xl
+              "
+            >
+              {/* Browser header */}
               <div
                 className="
                   flex
-                  h-9
+                  h-11
                   items-center
+                  justify-between
                   border-b
                   border-border
-                  bg-muted/40
-                  px-3
-                  sm:h-10
-                  sm:px-4
+                  bg-surface-muted
+                  px-4
                 "
               >
-                <div className="flex gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-red-400/70" />
-                  <span className="h-2 w-2 rounded-full bg-yellow-400/70" />
-                  <span className="h-2 w-2 rounded-full bg-green-400/70" />
+                <div className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-error/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
                 </div>
 
                 <div
                   className="
-                    mx-auto
                     hidden
-                    h-6
-                    w-52
-                    items-center
-                    justify-center
-                    rounded-md
+                    rounded-[var(--pulse-radius-sm)]
                     border
                     border-border
-                    bg-background
-                    text-[9px]
-                    text-muted-foreground
-                    sm:flex
+                    bg-surface
+                    px-4
+                    py-1
+                    text-[10px]
+                    text-text-subtle
+                    sm:block
                   "
                 >
                   app.pulse.com/dashboard
                 </div>
+
+                <div className="w-12" />
               </div>
 
               {/* Dashboard */}
-              <img
-                src="/images/pulse-dashboard.png"
-                alt="Pulse dashboard showing revenue, users, orders and conversion analytics"
-                className="
-                  block
-                  h-auto
-                  w-full
-                  object-cover
-                  object-top
-                "
-              />
+              <div className="bg-surface p-2 sm:p-3">
+                <div
+                  className="
+                    overflow-hidden
+                    rounded-[var(--pulse-radius-lg)]
+                    border
+                    border-border-light
+                    bg-background
+                  "
+                >
+                  <img
+                    src="/images/pulse-dashboard.png"
+                    alt="Pulse analytics dashboard"
+                    className="
+                      block
+                      h-auto
+                      w-full
+                    "
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Product Content */}
-          <div className="max-w-xl">
-            <p
+          {/* Content */}
+          <div className="max-w-lg lg:pl-2">
+            {/* Label */}
+            <div
               className="
+                flex
+                items-center
+                gap-2
                 text-xs
                 font-semibold
                 uppercase
-                tracking-[0.18em]
-                text-muted-foreground
+                tracking-[0.16em]
+                text-primary
               "
             >
+              <span className="h-px w-6 bg-primary" />
               One powerful workspace
-            </p>
+            </div>
 
+            {/* Heading */}
             <h3
               className="
-                mt-4
+                mt-5
+                font-heading
                 text-3xl
-                font-bold
-                leading-tight
-                tracking-tight
-                text-foreground
+                font-extrabold
+                leading-[1.1]
+                tracking-[-0.035em]
+                text-text-primary
                 sm:text-4xl
               "
             >
               Turn your data into
-              <span className="text-muted-foreground"> better decisions.</span>
+              <span className="text-primary"> better decisions.</span>
             </h3>
 
+            {/* Description */}
             <p
               className="
                 mt-5
                 text-sm
                 leading-6
-                text-muted-foreground
+                text-text-secondary
                 sm:text-base
                 sm:leading-7
               "
             >
-              Get a clear picture of your business performance without switching
-              between multiple tools. Pulse gives you the information you need,
-              exactly when you need it.
+              Stop jumping between spreadsheets and disconnected tools. Pulse
+              gives your team one clear view of business performance, so you can
+              understand what is happening and act faster.
             </p>
 
+            {/* Mini stats */}
+            <div
+              className="
+                mt-7
+                grid
+                grid-cols-2
+                gap-3
+              "
+            >
+              <div
+                className="
+                  rounded-[var(--pulse-radius-lg)]
+                  border
+                  border-border
+                  bg-surface-muted
+                  p-4
+                "
+              >
+                <div
+                  className="
+                    flex
+                    h-8
+                    w-8
+                    items-center
+                    justify-center
+                    rounded-[var(--pulse-radius-md)]
+                    bg-primary-soft
+                    text-primary
+                  "
+                >
+                  <TrendingUp size={15} />
+                </div>
+
+                <p
+                  className="
+                    mt-3
+                    text-lg
+                    font-bold
+                    tracking-tight
+                    text-text-primary
+                  "
+                >
+                  +24.8%
+                </p>
+
+                <p className="mt-0.5 text-xs text-text-muted">Revenue growth</p>
+              </div>
+
+              <div
+                className="
+                  rounded-[var(--pulse-radius-lg)]
+                  border
+                  border-border
+                  bg-surface-muted
+                  p-4
+                "
+              >
+                <div
+                  className="
+                    flex
+                    h-8
+                    w-8
+                    items-center
+                    justify-center
+                    rounded-[var(--pulse-radius-md)]
+                    bg-success-soft
+                    text-success
+                  "
+                >
+                  <Users size={15} />
+                </div>
+
+                <p
+                  className="
+                    mt-3
+                    text-lg
+                    font-bold
+                    tracking-tight
+                    text-text-primary
+                  "
+                >
+                  8,420
+                </p>
+
+                <p className="mt-0.5 text-xs text-text-muted">
+                  Active customers
+                </p>
+              </div>
+            </div>
+
             {/* Features */}
-            <div className="mt-7 space-y-4">
-              {[
-                "Track revenue and business performance",
-                "Understand customer growth",
-                "Monitor orders and conversions",
-                "Make data-driven decisions faster",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3">
+            <div className="mt-7 space-y-3">
+              {features.map((feature) => (
+                <div
+                  key={feature}
+                  className="
+                    flex
+                    items-center
+                    gap-3
+                  "
+                >
                   <span
                     className="
                       flex
-                      h-6
-                      w-6
+                      h-5
+                      w-5
                       shrink-0
                       items-center
                       justify-center
                       rounded-full
-                      bg-emerald-500/10
-                      text-emerald-600
+                      bg-success-soft
+                      text-success
                     "
                   >
-                    <Check size={14} strokeWidth={2.5} />
+                    <Check size={12} strokeWidth={2.5} />
                   </span>
 
-                  <span className="text-sm text-foreground">{item}</span>
+                  <span
+                    className="
+                      text-sm
+                      text-text-secondary
+                    "
+                  >
+                    {feature}
+                  </span>
                 </div>
               ))}
             </div>
@@ -227,18 +377,27 @@ const ProductShowcase = () => {
                 inline-flex
                 items-center
                 gap-2
+                rounded-[var(--pulse-radius-md)]
+                bg-primary
+                px-5
+                py-3
                 text-sm
                 font-semibold
-                text-foreground
+                text-primary-foreground
+                shadow-primary
+                transition-all
+                duration-[var(--pulse-transition-normal)]
+                hover:-translate-y-0.5
+                hover:bg-primary-hover
               "
             >
               Explore Pulse
               <ArrowRight
-                size={16}
+                size={15}
                 className="
                   transition-transform
-                  duration-200
-                  group-hover:translate-x-1
+                  duration-[var(--pulse-transition-fast)]
+                  group-hover:translate-x-0.5
                 "
               />
             </a>
