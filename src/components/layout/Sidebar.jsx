@@ -1,4 +1,11 @@
-import { LayoutDashboard, Users, CreditCard, Settings } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  CreditCard,
+  Settings,
+  BarChart3,
+  FileText,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const navigationItems = [
@@ -12,7 +19,16 @@ const navigationItems = [
     label: "Customers",
     path: "/dashboard/customers",
     icon: Users,
-    end: true,
+  },
+  {
+    label: "Revenue",
+    path: "/dashboard/revenue",
+    icon: BarChart3,
+  },
+  {
+    label: "Orders",
+    path: "/dashboard/orders",
+    icon: FileText,
   },
 ];
 
@@ -20,49 +36,81 @@ const Sidebar = () => {
   return (
     <aside
       className="
-        fixed inset-x-0 bottom-0 z-sidebar
-        flex h-16 w-full flex-row
-        border-t border-sidebar-border
+        fixed
+        inset-x-0
+        bottom-0
+        z-sidebar
+        flex
+        h-16
+        w-full
+        flex-row
+        border-t
+        border-sidebar-border
         bg-sidebar-background
 
-        md:inset-y-0 md:left-0 md:right-auto
-        md:h-screen md:w-64
+        md:inset-y-0
+        md:left-0
+        md:right-auto
+        md:h-screen
+        md:w-64
         md:flex-col
-        md:border-r md:border-t-0
+        md:border-r
+        md:border-t-0
       "
     >
       {/* Logo */}
       <div
         className="
-          hidden h-16 shrink-0
+          hidden
+          h-16
+          shrink-0
           items-center
-          border-b border-sidebar-border
+          border-b
+          border-sidebar-border
           px-6
           md:flex
         "
       >
-        <div className="flex items-center gap-3">
+        <NavLink to="/" className="flex items-center gap-3">
           <div
             className="
-              flex size-8 shrink-0 items-center justify-center
-              rounded-lg
+              flex
+              h-8
+              w-8
+              shrink-0
+              items-center
+              justify-center
+              rounded-[var(--pulse-radius-md)]
               bg-primary
+              text-primary-foreground
             "
           >
-            <span className="text-sm font-bold text-primary-foreground">P</span>
+            <span className="font-heading text-sm font-bold">P</span>
           </div>
 
-          <span className="font-heading text-xl font-bold text-text-primary">
+          <span
+            className="
+              font-heading
+              text-xl
+              font-bold
+              tracking-tight
+              text-text-primary
+            "
+          >
             Pulse
           </span>
-        </div>
+        </NavLink>
       </div>
 
       {/* Navigation */}
       <nav
         className="
-          flex flex-1 items-center justify-around
-          gap-1 px-2
+          flex
+          flex-1
+          items-center
+          justify-around
+          gap-1
+          px-2
 
           md:flex-col
           md:items-stretch
@@ -78,14 +126,20 @@ const Sidebar = () => {
             end={end}
             className={({ isActive }) =>
               `
-                  flex flex-1 flex-col
-                  items-center justify-center
+                  flex
+                  flex-1
+                  flex-col
+                  items-center
+                  justify-center
                   gap-1
-                  rounded-md
-                  px-2 py-2
-                  text-[10px] font-medium
+                  rounded-[var(--pulse-radius-md)]
+                  px-2
+                  py-2
+                  text-[10px]
+                  font-medium
                   text-sidebar-text
-                  transition-colors duration-200
+                  transition-all
+                  duration-[var(--pulse-transition-fast)]
 
                   hover:bg-surface-hover
                   hover:text-text-primary
@@ -100,13 +154,18 @@ const Sidebar = () => {
 
                   ${
                     isActive
-                      ? "bg-sidebar-active text-sidebar-text-active hover:bg-sidebar-active hover:text-sidebar-text-active"
+                      ? `
+                        bg-sidebar-active
+                        text-sidebar-text-active
+                        hover:bg-sidebar-active
+                        hover:text-sidebar-text-active
+                      `
                       : ""
                   }
                 `
             }
           >
-            <Icon className="size-[18px] shrink-0" strokeWidth={1.8} />
+            <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={1.8} />
 
             <span>{label}</span>
           </NavLink>
@@ -117,31 +176,43 @@ const Sidebar = () => {
       <div
         className="
           hidden
-          border-t border-sidebar-border
+          border-t
+          border-sidebar-border
           p-4
           md:block
         "
       >
         <NavLink
           to="/dashboard/settings"
-          end
           className={({ isActive }) =>
             `
-              flex items-center gap-3
-              rounded-md
-              px-3 py-2.5
-              text-sm font-medium
+              flex
+              items-center
+              gap-3
+              rounded-[var(--pulse-radius-md)]
+              px-3
+              py-2.5
+              text-sm
+              font-medium
               text-sidebar-text
-              transition-colors duration-200
+              transition-all
+              duration-[var(--pulse-transition-fast)]
 
               hover:bg-surface-hover
               hover:text-text-primary
 
-              ${isActive ? "bg-sidebar-active text-sidebar-text-active" : ""}
+              ${
+                isActive
+                  ? `
+                    bg-sidebar-active
+                    text-sidebar-text-active
+                  `
+                  : ""
+              }
             `
           }
         >
-          <Settings className="size-[18px] shrink-0" strokeWidth={1.8} />
+          <Settings className="h-[18px] w-[18px] shrink-0" strokeWidth={1.8} />
 
           <span>Settings</span>
         </NavLink>
