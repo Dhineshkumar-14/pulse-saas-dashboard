@@ -7,6 +7,7 @@ const testimonials = [
     avatar: "SM",
     quote:
       "Pulse completely changed how we understand our business. We finally have all our important metrics in one place.",
+    featured: true,
   },
   {
     name: "James Carter",
@@ -24,35 +25,106 @@ const testimonials = [
   },
 ];
 
+const Rating = () => {
+  return (
+    <div className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <Star
+          key={star}
+          size={13}
+          fill="currentColor"
+          strokeWidth={0}
+          className="text-primary"
+        />
+      ))}
+    </div>
+  );
+};
+
+const Avatar = ({ initials }) => {
+  return (
+    <div
+      className="
+        flex
+        h-10
+        w-10
+        shrink-0
+        items-center
+        justify-center
+        rounded-full
+        bg-primary-soft
+        text-xs
+        font-bold
+        text-primary
+      "
+    >
+      {initials}
+    </div>
+  );
+};
+
 const Testimonials = () => {
+  const featured = testimonials.find((testimonial) => testimonial.featured);
+
+  const secondary = testimonials.filter((testimonial) => !testimonial.featured);
+
   return (
     <section
       id="testimonials"
-      className="bg-background py-20 sm:py-24 lg:py-32"
+      className="
+        border-t
+        border-border-light
+        bg-background
+        py-20
+        sm:py-24
+        lg:py-28
+      "
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
+      <div
+        className="
+          mx-auto
+          max-w-[var(--pulse-container-xl)]
+          px-4
+          sm:px-6
+          lg:px-8
+        "
+      >
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold text-primary">
+          <div
+            className="
+              inline-flex
+              items-center
+              rounded-full
+              border
+              border-border
+              bg-surface
+              px-3
+              py-1.5
+              text-xs
+              font-semibold
+              text-primary
+            "
+          >
             TESTIMONIALS
-          </p>
+          </div>
 
           <h2
             className="
-              mt-3
+              mt-5
+              font-heading
               text-3xl
-              font-bold
-              tracking-tight
-              text-foreground
+              font-extrabold
+              leading-tight
+              tracking-[-0.035em]
+              text-text-primary
               sm:text-4xl
               lg:text-5xl
             "
           >
             Loved by teams
-            <span className="text-muted-foreground">
-              {" "}that move fast.
-            </span>
+            <br className="hidden sm:block" />
+            <span className="text-primary"> that move fast.</span>
           </h2>
 
           <p
@@ -62,144 +134,264 @@ const Testimonials = () => {
               max-w-2xl
               text-sm
               leading-6
-              text-muted-foreground
+              text-text-secondary
               sm:text-base
               sm:leading-7
             "
           >
-            See why growing teams use Pulse to understand their
-            business and make better decisions.
+            See why growing teams use Pulse to understand their business and
+            make better decisions.
           </p>
         </div>
 
-        {/* Testimonials */}
+        {/* Testimonials layout */}
         <div
           className="
+            mx-auto
             mt-12
-            grid
-            gap-5
+            max-w-5xl
+            space-y-4
             sm:mt-14
-            md:grid-cols-2
-            lg:grid-cols-3
           "
         >
-          {testimonials.map((testimonial) => (
-            <article
-              key={testimonial.name}
+          {/* Featured testimonial */}
+          <article
+            className="
+              relative
+              overflow-hidden
+              rounded-[var(--pulse-radius-2xl)]
+              border
+              border-border
+              bg-surface
+              p-7
+              shadow-sm
+              sm:p-9
+              lg:p-10
+            "
+          >
+            {/* Accent */}
+            <div
               className="
-                group
-                flex
-                flex-col
-                rounded-2xl
-                border
-                border-border
-                bg-background
-                p-6
-                transition-all
-                duration-300
-                hover:-translate-y-1
-                hover:shadow-xl
-                sm:p-7
+                absolute
+                left-0
+                top-0
+                h-full
+                w-1
+                bg-primary
+              "
+            />
+
+            <div
+              className="
+                grid
+                gap-8
+                lg:grid-cols-[1fr_auto]
+                lg:items-end
               "
             >
-              {/* Quote Icon */}
-              <div className="flex items-center justify-between">
+              <div>
+                {/* Quote mark */}
                 <div
                   className="
                     flex
-                    h-10
-                    w-10
+                    h-9
+                    w-9
                     items-center
                     justify-center
-                    rounded-xl
-                    bg-muted
-                    text-muted-foreground
+                    rounded-[var(--pulse-radius-md)]
+                    bg-primary-soft
+                    text-primary
                   "
                 >
-                  <Quote size={18} />
+                  <Quote size={17} />
                 </div>
 
-                {/* Rating */}
-                <div className="flex items-center gap-0.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={14}
-                      fill="currentColor"
-                      className="text-amber-400"
-                    />
-                  ))}
+                {/* Quote */}
+                <blockquote
+                  className="
+                    mt-6
+                    max-w-3xl
+                    font-heading
+                    text-2xl
+                    font-semibold
+                    leading-[1.35]
+                    tracking-[-0.02em]
+                    text-text-primary
+                    sm:text-3xl
+                  "
+                >
+                  “{featured.quote}”
+                </blockquote>
+
+                {/* Person */}
+                <div className="mt-7 flex items-center gap-3">
+                  <Avatar initials={featured.avatar} />
+
+                  <div>
+                    <p
+                      className="
+                        text-sm
+                        font-semibold
+                        text-text-primary
+                      "
+                    >
+                      {featured.name}
+                    </p>
+
+                    <p
+                      className="
+                        mt-0.5
+                        text-xs
+                        text-text-muted
+                      "
+                    >
+                      {featured.role}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* Quote */}
-              <blockquote
-                className="
-                  mt-7
-                  flex-1
-                  text-base
-                  leading-7
-                  text-foreground
-                  sm:text-[17px]
-                "
-              >
-                “{testimonial.quote}”
-              </blockquote>
-
-              {/* Person */}
+              {/* Rating */}
               <div
                 className="
-                  mt-8
                   flex
                   items-center
                   gap-3
-                  border-t
-                  border-border
-                  pt-5
+                  lg:pb-1
                 "
               >
-                {/* Avatar */}
-                <div
+                <Rating />
+
+                <span
                   className="
-                    flex
-                    h-10
-                    w-10
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-full
-                    bg-muted
                     text-xs
-                    font-semibold
-                    text-foreground
+                    font-medium
+                    text-text-muted
                   "
                 >
-                  {testimonial.avatar}
-                </div>
-
-                <div>
-                  <p className="text-sm font-semibold text-foreground">
-                    {testimonial.name}
-                  </p>
-
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {testimonial.role}
-                  </p>
-                </div>
+                  5.0
+                </span>
               </div>
-            </article>
-          ))}
+            </div>
+          </article>
+
+          {/* Secondary testimonials */}
+          <div className="grid gap-4 md:grid-cols-2">
+            {secondary.map((testimonial) => (
+              <article
+                key={testimonial.name}
+                className="
+                  rounded-[var(--pulse-radius-xl)]
+                  border
+                  border-border
+                  bg-surface
+                  p-6
+                  transition-all
+                  duration-[var(--pulse-transition-normal)]
+                  hover:-translate-y-0.5
+                  hover:border-border-hover
+                  hover:shadow-md
+                  sm:p-7
+                "
+              >
+                {/* Top */}
+                <div className="flex items-center justify-between">
+                  <div
+                    className="
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-full
+                      bg-primary-soft
+                      text-primary
+                    "
+                  >
+                    <Quote size={14} />
+                  </div>
+
+                  <Rating />
+                </div>
+
+                {/* Quote */}
+                <blockquote
+                  className="
+                    mt-5
+                    text-sm
+                    leading-6
+                    text-text-secondary
+                    sm:text-[15px]
+                  "
+                >
+                  “{testimonial.quote}”
+                </blockquote>
+
+                {/* Person */}
+                <div
+                  className="
+                    mt-6
+                    flex
+                    items-center
+                    gap-3
+                    border-t
+                    border-border-light
+                    pt-5
+                  "
+                >
+                  <Avatar initials={testimonial.avatar} />
+
+                  <div>
+                    <p
+                      className="
+                        text-sm
+                        font-semibold
+                        text-text-primary
+                      "
+                    >
+                      {testimonial.name}
+                    </p>
+
+                    <p
+                      className="
+                        mt-0.5
+                        text-xs
+                        text-text-muted
+                      "
+                    >
+                      {testimonial.role}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
 
-        {/* Bottom trust statement */}
-        <div className="mt-10 text-center">
-          <p className="text-sm text-muted-foreground">
+        {/* Trust statement */}
+        <div
+          className="
+            mt-10
+            flex
+            flex-col
+            items-center
+            justify-center
+            gap-2
+            text-center
+            sm:mt-12
+            sm:flex-row
+            sm:gap-3
+          "
+        >
+          <div className="flex items-center gap-1">
+            <Rating />
+          </div>
+
+          <span className="text-sm text-text-muted">
             Trusted by{" "}
-            <span className="font-semibold text-foreground">
-              2,000+
-            </span>{" "}
+            <span className="font-semibold text-text-primary">2,000+</span>{" "}
             modern teams worldwide.
-          </p>
+          </span>
         </div>
       </div>
     </section>

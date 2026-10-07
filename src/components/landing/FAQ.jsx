@@ -38,57 +38,92 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
   const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+    setOpenIndex((current) => (current === index ? null : index));
   };
 
   return (
     <section
       id="faq"
-      className="border-t border-border bg-background py-20 sm:py-24 lg:py-32"
+      className="
+        border-t
+        border-border-light
+        bg-surface
+        py-16
+        sm:py-20
+        lg:py-24
+      "
     >
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[var(--pulse-container-xl)] px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center">
-          <p className="text-sm font-semibold text-primary">FAQ</p>
+        <div className="mx-auto max-w-3xl text-center">
+          <div
+            className="
+              inline-flex
+              items-center
+              rounded-full
+              border
+              border-border
+              bg-surface-muted
+              px-3
+              py-1.5
+              text-xs
+              font-semibold
+              text-primary
+            "
+          >
+            FAQ
+          </div>
 
           <h2
             className="
-              mt-3
-              text-3xl
-              font-bold
-              tracking-tight
-              text-foreground
-              sm:text-4xl
-              lg:text-5xl
-            "
-          >
-            Frequently asked
-            <span className="text-muted-foreground"> questions.</span>
-          </h2>
-
-          <p
-            className="
               mx-auto
-              mt-5
+              mt-4
               max-w-2xl
-              text-sm
-              leading-6
-              text-muted-foreground
-              sm:text-base
-              sm:leading-7
+              font-heading
+              text-3xl
+              font-extrabold
+              leading-[1.08]
+              tracking-[-0.035em]
+              text-text-primary
+              sm:text-4xl
+              lg:text-[44px]
             "
           >
-            Everything you need to know about Pulse.
-          </p>
+            Frequently asked <span className="text-primary">questions.</span>
+          </h2>
         </div>
 
         {/* FAQ List */}
-        <div className="mt-12 divide-y divide-border border-y border-border">
+        <div
+          className="
+            mx-auto
+            mt-9
+            max-w-3xl
+            overflow-hidden
+            rounded-[var(--pulse-radius-xl)]
+            border
+            border-border
+            bg-surface
+            shadow-sm
+            sm:mt-10
+          "
+        >
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (
-              <div key={faq.question}>
+              <div
+                key={faq.question}
+                className={`
+                  border-b
+                  border-border-light
+                  last:border-b-0
+                  transition-colors
+                  duration-[var(--pulse-transition-fast)]
+                  ${isOpen ? "bg-primary-soft/30" : "bg-surface"}
+                `}
+              >
+                {/* Question */}
                 <button
                   type="button"
                   onClick={() => toggleFAQ(index)}
@@ -99,18 +134,22 @@ const FAQ = () => {
                     items-center
                     justify-between
                     gap-6
-                    py-5
+                    px-5
+                    py-4
                     text-left
-                    sm:py-6
+                    sm:px-6
+                    sm:py-5
                   "
                 >
                   <span
-                    className="
+                    className={`
                       text-sm
                       font-semibold
-                      text-foreground
+                      transition-colors
+                      duration-[var(--pulse-transition-fast)]
                       sm:text-base
-                    "
+                      ${isOpen ? "text-primary" : "text-text-primary"}
+                    `}
                   >
                     {faq.question}
                   </span>
@@ -118,21 +157,30 @@ const FAQ = () => {
                   <span
                     className={`
                       flex
-                      h-7
-                      w-7
+                      h-8
+                      w-8
                       shrink-0
                       items-center
                       justify-center
-                      rounded-full
+                      rounded-[var(--pulse-radius-md)]
                       border
-                      border-border
-                      bg-muted/50
-                      transition-transform
-                      duration-200
-                      ${isOpen ? "rotate-180" : ""}
+                      transition-all
+                      duration-[var(--pulse-transition-normal)]
+                      ${
+                        isOpen
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-surface text-text-muted"
+                      }
                     `}
                   >
-                    <ChevronDown size={15} />
+                    <ChevronDown
+                      size={16}
+                      className={`
+                        transition-transform
+                        duration-[var(--pulse-transition-normal)]
+                        ${isOpen ? "rotate-180" : "rotate-0"}
+                      `}
+                    />
                   </span>
                 </button>
 
@@ -141,7 +189,7 @@ const FAQ = () => {
                   className={`
                     grid
                     transition-all
-                    duration-300
+                    duration-[var(--pulse-transition-normal)]
                     ${
                       isOpen
                         ? "grid-rows-[1fr] opacity-100"
@@ -152,14 +200,17 @@ const FAQ = () => {
                   <div className="overflow-hidden">
                     <p
                       className="
-                        max-w-3xl
-                        pb-6
-                        pr-10
+                        max-w-2xl
+                        px-5
+                        pb-5
+                        pr-14
                         text-sm
                         leading-6
-                        text-muted-foreground
-                        sm:text-base
-                        sm:leading-7
+                        text-text-secondary
+                        sm:px-6
+                        sm:pb-6
+                        sm:text-[15px]
+                        sm:leading-6
                       "
                     >
                       {faq.answer}
@@ -171,22 +222,57 @@ const FAQ = () => {
           })}
         </div>
 
-        {/* Bottom Help */}
-        <div className="mt-10 text-center">
-          <p className="text-sm text-muted-foreground">Still have questions?</p>
+        {/* Support */}
+        <div
+          className="
+            mx-auto
+            mt-8
+            flex
+            max-w-3xl
+            flex-col
+            items-center
+            justify-center
+            gap-3
+            rounded-[var(--pulse-radius-xl)]
+            border
+            border-border
+            bg-surface-muted
+            px-5
+            py-4
+            text-center
+            sm:mt-10
+            sm:flex-row
+            sm:gap-4
+          "
+        >
+          <div>
+            <p className="text-sm font-semibold text-text-primary">
+              Still have questions?
+            </p>
+
+            <p className="mt-0.5 text-xs text-text-muted">
+              Our team is happy to help.
+            </p>
+          </div>
 
           <a
             href="mailto:hello@pulse.com"
             className="
-              mt-2
-              inline-block
-              text-sm
+              inline-flex
+              items-center
+              rounded-[var(--pulse-radius-md)]
+              border
+              border-border
+              bg-surface
+              px-4
+              py-2
+              text-xs
               font-semibold
-              text-foreground
-              underline
-              underline-offset-4
-              transition-colors
-              hover:text-muted-foreground
+              text-text-primary
+              transition-all
+              duration-[var(--pulse-transition-fast)]
+              hover:border-border-hover
+              hover:bg-surface-hover
             "
           >
             Talk to our team

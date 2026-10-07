@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 
 const plans = [
   {
@@ -54,28 +54,61 @@ const Pricing = () => {
   return (
     <section
       id="pricing"
-      className="border-t border-border bg-muted/30 py-20 sm:py-24 lg:py-32"
+      className="
+        border-t
+        border-border-light
+        bg-surface-muted
+        py-20
+        sm:py-24
+        lg:py-28
+      "
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
+      <div
+        className="
+          mx-auto
+          max-w-[var(--pulse-container-xl)]
+          px-4
+          sm:px-6
+          lg:px-8
+        "
+      >
+        {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold text-primary">PRICING</p>
+          <div
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-border
+              bg-surface
+              px-3
+              py-1.5
+              text-xs
+              font-semibold
+              text-primary
+            "
+          >
+            PRICING
+          </div>
 
           <h2
             className="
-              mt-3
+              mt-5
+              font-heading
               text-3xl
-              font-bold
-              tracking-tight
-              text-foreground
+              font-extrabold
+              leading-tight
+              tracking-[-0.035em]
+              text-text-primary
               sm:text-4xl
               lg:text-5xl
             "
           >
             Simple pricing.
-            <span className="text-muted-foreground"> No surprises.</span>
+            <br className="hidden sm:block" />
+            <span className="text-primary"> No surprises.</span>
           </h2>
 
           <p
@@ -85,63 +118,62 @@ const Pricing = () => {
               max-w-2xl
               text-sm
               leading-6
-              text-muted-foreground
+              text-text-secondary
               sm:text-base
               sm:leading-7
             "
           >
             Start for free and upgrade when your business needs more. Every plan
-            is designed to help you get more from your data.
+            gives you the tools to understand and improve your business.
           </p>
         </div>
 
-        {/* =====================================================
-            PRICING CARDS
-        ===================================================== */}
+        {/* Pricing cards */}
         <div
           className="
             mx-auto
             mt-12
             grid
             max-w-6xl
-            gap-5
-            md:grid-cols-3
+            gap-4
             sm:mt-14
+            md:grid-cols-3
+            lg:gap-5
           "
         >
           {plans.map((plan) => (
-            <div
+            <article
               key={plan.name}
               className={`
                 relative
                 flex
                 flex-col
-                rounded-2xl
+                rounded-[var(--pulse-radius-2xl)]
                 border
                 p-6
                 transition-all
-                duration-300
+                duration-[var(--pulse-transition-normal)]
                 sm:p-7
                 ${
                   plan.popular
                     ? `
                       border-primary
-                      bg-primary
-                      text-primary-foreground
-                      shadow-xl
-                      shadow-primary/10
+                      bg-surface
+                      shadow-primary
                       md:-translate-y-2
                     `
                     : `
                       border-border
-                      bg-background
+                      bg-surface
+                      shadow-sm
                       hover:-translate-y-1
-                      hover:shadow-xl
+                      hover:border-border-hover
+                      hover:shadow-md
                     `
                 }
               `}
             >
-              {/* Popular Badge */}
+              {/* Popular badge */}
               {plan.popular && (
                 <div
                   className="
@@ -149,106 +181,163 @@ const Pricing = () => {
                     -top-3
                     left-1/2
                     -translate-x-1/2
+                    inline-flex
+                    items-center
+                    gap-1.5
                     rounded-full
-                    bg-background
+                    border
+                    border-primary
+                    bg-primary
                     px-3
                     py-1
                     text-[10px]
                     font-bold
                     uppercase
-                    tracking-wider
-                    text-foreground
-                    shadow-sm
+                    tracking-[0.12em]
+                    text-primary-foreground
+                    shadow-primary
                   "
                 >
+                  <Sparkles size={11} />
                   Most popular
                 </div>
               )}
 
-              {/* Plan Name */}
-              <h3
-                className={`
-                  text-lg
-                  font-semibold
-                  ${
-                    plan.popular ? "text-primary-foreground" : "text-foreground"
-                  }
-                `}
-              >
-                {plan.name}
-              </h3>
+              {/* Plan header */}
+              <div>
+                <div className="flex items-center justify-between">
+                  <h3
+                    className="
+                      font-heading
+                      text-lg
+                      font-bold
+                      text-text-primary
+                    "
+                  >
+                    {plan.name}
+                  </h3>
 
-              {/* Description */}
-              <p
-                className={`
-                  mt-2
-                  min-h-[40px]
-                  text-sm
-                  leading-5
-                  ${
-                    plan.popular
-                      ? "text-primary-foreground/70"
-                      : "text-muted-foreground"
-                  }
-                `}
-              >
-                {plan.description}
-              </p>
+                  {plan.popular && (
+                    <span
+                      className="
+                        rounded-full
+                        bg-primary-soft
+                        px-2
+                        py-1
+                        text-[10px]
+                        font-semibold
+                        text-primary
+                      "
+                    >
+                      Recommended
+                    </span>
+                  )}
+                </div>
+
+                <p
+                  className="
+                    mt-2
+                    min-h-[40px]
+                    text-sm
+                    leading-5
+                    text-text-muted
+                  "
+                >
+                  {plan.description}
+                </p>
+              </div>
 
               {/* Price */}
               <div className="mt-7">
                 <div className="flex items-end gap-2">
                   <span
-                    className={`
+                    className="
+                      font-heading
                       text-4xl
-                      font-bold
-                      tracking-tight
+                      font-extrabold
+                      tracking-[-0.04em]
+                      text-text-primary
                       sm:text-5xl
-                      ${
-                        plan.popular
-                          ? "text-primary-foreground"
-                          : "text-foreground"
-                      }
-                    `}
+                    "
                   >
                     {plan.price}
                   </span>
 
                   <span
-                    className={`
-                      mb-1
+                    className="
+                      mb-1.5
                       text-xs
-                      ${
-                        plan.popular
-                          ? "text-primary-foreground/60"
-                          : "text-muted-foreground"
-                      }
-                    `}
+                      text-text-muted
+                    "
                   >
                     {plan.period}
                   </span>
                 </div>
               </div>
 
-              {/* Divider */}
-              <div
+              {/* Button */}
+              <a
+                href="/dashboard"
                 className={`
-                  my-7
-                  border-t
+                  mt-7
+                  flex
+                  w-full
+                  items-center
+                  justify-center
+                  rounded-[var(--pulse-radius-md)]
+                  px-4
+                  py-3
+                  text-sm
+                  font-semibold
+                  transition-all
+                  duration-[var(--pulse-transition-normal)]
                   ${
                     plan.popular
-                      ? "border-primary-foreground/15"
-                      : "border-border"
+                      ? `
+                        bg-primary
+                        text-primary-foreground
+                        shadow-primary
+                        hover:-translate-y-0.5
+                        hover:bg-primary-hover
+                      `
+                      : `
+                        border
+                        border-border
+                        bg-surface
+                        text-text-primary
+                        hover:border-border-hover
+                        hover:bg-surface-hover
+                      `
                   }
                 `}
-              />
+              >
+                {plan.button}
+              </a>
+
+              {/* Divider */}
+              <div className="my-7 h-px bg-border-light" />
+
+              {/* Features heading */}
+              <p
+                className="
+                  mb-4
+                  text-xs
+                  font-semibold
+                  uppercase
+                  tracking-[0.12em]
+                  text-text-subtle
+                "
+              >
+                What's included
+              </p>
 
               {/* Features */}
-              <div className="flex-1 space-y-3.5">
+              <div className="space-y-3.5">
                 {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-3">
+                  <div key={feature} className="flex items-start gap-3">
                     <span
                       className={`
+                        mt-0.5
                         flex
                         h-5
                         w-5
@@ -258,70 +347,49 @@ const Pricing = () => {
                         rounded-full
                         ${
                           plan.popular
-                            ? "bg-primary-foreground/10 text-primary-foreground"
-                            : "bg-muted text-foreground"
+                            ? "bg-primary-soft text-primary"
+                            : "bg-success-soft text-success"
                         }
                       `}
                     >
-                      <Check size={12} strokeWidth={2.5} />
+                      <Check size={11} strokeWidth={2.5} />
                     </span>
 
                     <span
-                      className={`
+                      className="
                         text-sm
-                        ${
-                          plan.popular
-                            ? "text-primary-foreground/85"
-                            : "text-muted-foreground"
-                        }
-                      `}
+                        leading-5
+                        text-text-secondary
+                      "
                     >
                       {feature}
                     </span>
                   </div>
                 ))}
               </div>
-
-              {/* Button */}
-              <button
-                type="button"
-                className={`
-                  mt-8
-                  w-full
-                  rounded-xl
-                  px-4
-                  py-3
-                  text-sm
-                  font-semibold
-                  transition-all
-                  duration-200
-                  ${
-                    plan.popular
-                      ? `
-                        bg-background
-                        text-foreground
-                        hover:bg-background/90
-                      `
-                      : `
-                        border
-                        border-border
-                        bg-background
-                        text-foreground
-                        hover:bg-muted
-                      `
-                  }
-                `}
-              >
-                {plan.button}
-              </button>
-            </div>
+            </article>
           ))}
         </div>
 
         {/* Bottom note */}
-        <p className="mt-8 text-center text-xs text-muted-foreground">
-          All plans include a 14-day free trial. No credit card required.
-        </p>
+        <div
+          className="
+            mt-8
+            flex
+            flex-wrap
+            items-center
+            justify-center
+            gap-x-6
+            gap-y-2
+            text-center
+            text-xs
+            text-text-muted
+          "
+        >
+          <span>No credit card required</span>
+          <span>14-day free trial</span>
+          <span>Cancel anytime</span>
+        </div>
       </div>
     </section>
   );

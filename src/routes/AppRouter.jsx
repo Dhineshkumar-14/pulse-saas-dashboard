@@ -4,6 +4,8 @@ import Home from "../pages/Home";
 import Dashboard from "../pages/Dashboard";
 import Customers from "../pages/Customers";
 
+import NotFound from "../pages/NotFound";
+
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const AppRoutes = () => {
@@ -20,6 +22,9 @@ const AppRoutes = () => {
         {/* /dashboard/customers */}
         <Route path="customers" element={<Customers />} />
       </Route>
+
+      {/* ================= 404 ================= */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
